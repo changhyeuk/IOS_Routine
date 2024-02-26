@@ -70,7 +70,6 @@ if __name__ == "__main__":
     plt.plot(case_name,dark_level,'bo-')
     temp_d = dark_level[0]
     result = [((value - int(temp_d))/value)*100 for value in dark_level]
-    #print(result)
 
     fig, ax1 = plt.subplots()
     ax1.plot(case_name,dark_level,'bo-')
