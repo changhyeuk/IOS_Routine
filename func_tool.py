@@ -165,19 +165,22 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
 
 def X_Response(Folder_Path,Out_Folder,ExposureT):
     # uGy = 1220.2 x sec  + 3.5293
-    df = pd.DataFrame(columns=['sec','Dose', 'Median'])
+    df = pd.DataFrame(columns=['Bright','sec','Dose', 'STD', 'Median'])
 
     for i in range(0,np.size(ExposureT)):
-        df = df.append({'sec':ExposureT[i],'Dose': 1220.2*float(ExposureT[i])+ 3.5293}, ignore_index=True)
+        df = df.append({'Bright':'A0'+str(i),'sec':ExposureT[i],'Dose': 1220.2*float(ExposureT[i])+ 3.5293,'STD':np.std()}, ignore_index=True)
     target_folder = os.path.join(Folder_Path,Out_Folder)
     for (path, dir, files) in os.walk(target_folder):
         for filename in files:
+            print ( filename )
             if 'A0' in filename:
                 numbers = re.findall(r'\d+', filename)
+                print('print number :  ', numbers[0])
                 if numbers:
                     numbers_without_zero = [ int(num) for num in numbers]
+                    print ( 'number_without_zero : ' , numbers_without_zero )
                     df.at[numbers_without_zero[0],'Median']=numbers_without_zero[1]
-    #print (df)
+    print (df)
     df.to_excel(target_folder + '/X_response.xlsx')
 
     x_dose = df['Dose']
