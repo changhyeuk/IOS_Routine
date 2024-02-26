@@ -164,33 +164,31 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
     plt.close()
 
 def X_Response(Folder_Path,Out_Folder,ExposureT):
-    # uGy = 1220.2 x sec  + 3.5293
+    print ( Folder_Path, Out_Folder, ExposureT)
+
+    # # uGy = 1220.2 x sec  + 3.5293
     df = pd.DataFrame(columns=['Bright','sec','Dose', 'STD', 'Median'])
 
-    for i in range(0,np.size(ExposureT)):
-        df = df.append({'Bright':'A0'+str(i),'sec':ExposureT[i],'Dose': 1220.2*float(ExposureT[i])+ 3.5293,'STD':np.std()}, ignore_index=True)
-    target_folder = os.path.join(Folder_Path,Out_Folder)
-    for (path, dir, files) in os.walk(target_folder):
-        for filename in files:
-            print ( filename )
-            if 'A0' in filename:
-                numbers = re.findall(r'\d+', filename)
-                print('print number :  ', numbers[0])
-                if numbers:
-                    numbers_without_zero = [ int(num) for num in numbers]
-                    print ( 'number_without_zero : ' , numbers_without_zero )
-                    df.at[numbers_without_zero[0],'Median']=numbers_without_zero[1]
+    num = 0
+    for i in ExposureT:
+        file_string = 'A0'+str(num)
+        num=num+1
+        out_files = os.listdir(Folder_Path+Out_Folder)
+        match_files = [file for file in out_files if file_string in file]
+        targe_file = os.path.join(Folder_Path,Out_Folder,match_files[0])
+        select_image = image_tool.open_raw_image(targe_file, height, width, 1)
+        cal_dose = 1220.2*float(i)+ 3.5293
+        df = df.append({'Bright': file_string, 'sec': i, 'Dose': cal_dose,'STD':int(np.std(select_image)),
+                        'Median':int(np.median(select_image))}, ignore_index=True)
     print (df)
-    df.to_excel(target_folder + '/X_response.xlsx')
+
+    Test_serise = input("Which test results ? ( 01 ): ")
+    Bake_hr = input ("How long baking process done? ( ex : 18 ) : ")
+    output_file_name = Test_serise+'_X_response_After_'+Bake_hr+'_hr'
+    df.to_excel(os.path.join(Folder_Path,Out_Folder) + '/'+output_file_name+'.xlsx')
 
     x_dose = df['Dose']
     y_dn = df['Median']
-    # print('X Dose :',x_dose)
-    # print('y DN   :', y_dn)
-    # b = (np.mean(x_dose)*np.mean(y_dn)-np.mean(x_dose*y_dn))/(np.mean(x_dose)*np.mean(x_dose)-np.mean(x_dose*x_dose))
-    # a = np.mean(y_dn)-np.mean(x_dose)*b
-    #
-    # print ( f'y={a:.2f}+{b:.2f}x')
 
     x_dose = df['Dose'].values.reshape(-1,1)
     y_dn = df['Median'].values
@@ -202,14 +200,9 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     x_reg = np.linspace(x_min,x_max,100).reshape(-1,1)
 
     plt.figure()
-    # plt.plot(x_dose,y_dn, 'bo-')
-    # for y_value, x_value in zip(y_dn, x_dose):
-    #     plt.text(x_value, y_value, f'{y_value}', ha='right')
-
     plt.scatter(x_dose,y_dn,color='blue')
     for y_value, x_value in zip(y_dn, x_dose):
         plt.text(x_value, y_value, f'{y_value}', ha='right')
-
     plt.plot(x_reg, model.predict(x_reg), color='red', linestyle='--',
              label=f'Linear Regression (R2={r2_score(y_dn, model.predict(x_dose)):.2f})')
     plt.text(0.2, 0.9, f'Y = {model.coef_[0]:.2f}X +( {model.intercept_:.2f} )', fontsize=10,
@@ -221,5 +214,5 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     plt.xlim([0,x_max])
     plt.ylim([0,max(model.predict(x_reg))])
     plt.grid()
-    plt.savefig(target_folder + '/X_response.jpg', bbox_inches='tight')
+    plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
     plt.close()
