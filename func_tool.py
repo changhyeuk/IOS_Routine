@@ -140,6 +140,7 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
 
     plt.figure()
     for i in range(0, 50, 10):
+        print (i)
         if i < 10:
             color = 'red'
             group_label = List[0]
@@ -155,17 +156,14 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
         else:
             color ='green'
             group_label = List[4]
-        # merged_df.loc[i:i + 9, 'x']
-    plt.plot(merged_df['Median'], linestyle='-', marker='o', color=color,label=group_label)
-    plt.legend(loc='upper center')
+        plt.plot(merged_df.loc[i:i+9,'Median'], linestyle='-', marker='o', color=color,label=group_label)
+        plt.legend(loc='upper center')
     plt.xlabel('Obtained Frame [#]')
     plt.ylabel('Median [DN]')
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 
 def X_Response(Folder_Path,Out_Folder,ExposureT):
-    print ( Folder_Path, Out_Folder, ExposureT)
-
     # # uGy = 1220.2 x sec  + 3.5293
     df = pd.DataFrame(columns=['Bright','sec','Dose', 'STD', 'Median'])
 
@@ -180,7 +178,6 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
         cal_dose = 1220.2*float(i)+ 3.5293
         df = df.append({'Bright': file_string, 'sec': i, 'Dose': cal_dose,'STD':int(np.std(select_image)),
                         'Median':int(np.median(select_image))}, ignore_index=True)
-    print (df)
 
     Test_serise = input("Which test results ? ( 01 ): ")
     Bake_hr = input ("How long baking process done? ( ex : 18 ) : ")
