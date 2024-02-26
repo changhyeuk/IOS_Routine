@@ -1,4 +1,4 @@
-# 2023/12/05 Simple Code with Global Variable
+# 20240226 The Code that I have developed previously was committed and pushed
 
 import os
 import matplotlib.pyplot as plt
