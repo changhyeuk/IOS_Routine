@@ -28,7 +28,6 @@ def find_x_frame(folder_name,threshold):
         if j > threshold:
             file_index.append(num)
     x_begin = file_index[0]
-    #print(np.diff(ave_frame)-ave_frame[1])
     plt.plot(np.diff(ave_frame), 'bo-')
     plt.xlabel('Obtained Frame [#]')
     plt.ylabel('Derivative STD of frames')
