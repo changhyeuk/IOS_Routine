@@ -53,9 +53,7 @@ for df in dfs:
     plt.plot(x_reg, model.predict(x_reg), color=inner_colors[j], linestyle='--')
     label_s_2 = f'Y = {model.coef_[0]:.2f}X +( {model.intercept_:.2f} )'
     label_s_3 = f'R2 = {math.floor(r2_score(MedianD, model.predict(DoseX)) * 1000) / 1000}'
-
     print ( model.coef_[0], model.intercept_ )
-    #df.append({'sec': ExposureT[i],
     df_slop = df_slop.append({'Serise':df_hr[j],'Slop':model.coef_[0],'Intercept':model.intercept_},ignore_index=True)
 
     plt.scatter(DoseX, MedianD, color=inner_colors[j], marker='o', linestyle='-',

@@ -1,5 +1,6 @@
 import os
 import image_tool
+import fitting_tool
 import matplotlib.pyplot as plt
 import numpy as np
 import shutil
@@ -187,29 +188,20 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     x_dose = df['Dose']
     y_dn = df['Median']
 
-    x_dose = df['Dose'].values.reshape(-1,1)
-    y_dn = df['Median'].values
-    model = LinearRegression()
-    model.fit(x_dose,y_dn)
-
-    x_min = 0
-    x_max = x_dose.max()+(x_dose.max()*0.1)
-    x_reg = np.linspace(x_min,x_max,100).reshape(-1,1)
+    x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearFit(x_dose,y_dn)
 
     plt.figure()
     plt.scatter(x_dose,y_dn,color='blue')
     for y_value, x_value in zip(y_dn, x_dose):
         plt.text(x_value, y_value, f'{y_value}', ha='right')
-    plt.plot(x_reg, model.predict(x_reg), color='red', linestyle='--',
-             label=f'Linear Regression (R2={r2_score(y_dn, model.predict(x_dose)):.2f})')
-    plt.text(0.2, 0.9, f'Y = {model.coef_[0]:.2f}X +( {model.intercept_:.2f} )', fontsize=10,
+    plt.plot(x_fitting, y_fitting, color='red', linestyle='--')#,
+             #label=f'Linear Regression (R2={r2score:.2f})')
+    plt.text(0.2, 0.9, f'Y = {model_coef[0]:.2f}X +( {model_intercpt:.2f} )', fontsize=10,
              transform=plt.gca().transAxes)
-    plt.text(0.2, 0.85, f'R2 = {math.floor(r2_score(y_dn, model.predict(x_dose))*1000)/1000}', fontsize=10,
+    plt.text(0.2, 0.85, f'R2 = {math.floor(r2score*1000)/1000}', fontsize=10,
              transform=plt.gca().transAxes)
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
-    plt.xlim([0,x_max])
-    #plt.ylim([0,max(model.predict(x_reg))])
     plt.ylim([0,2500])
     plt.grid()
     plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
