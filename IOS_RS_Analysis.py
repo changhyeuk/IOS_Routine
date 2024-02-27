@@ -57,10 +57,7 @@ if __name__ == "__main__":
 
     x_i = 0
     for test_case in folder_list:
-        #print ( test_case, new_x_begin[x_i])
         test_case_folder = os.path.join(folder_path,test_case)
-        #print ( test_case_folder)
-        #Select 3 frame and substraction
         d_value = func_tool.Dark_Sub_n_Sum(test_case_folder,output_path, new_x_begin[x_i])
         print('Case : ', test_case, ' , Dark Median : ', d_value)
         case_name.append(test_case)

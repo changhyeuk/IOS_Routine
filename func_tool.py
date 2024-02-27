@@ -54,7 +54,6 @@ def Dark_Sub_n_Sum(folder_name, target_folder, frame_num):
     new_dark = image_tool.open_raw_image(folder_name+'/000'+str(frame_num-1)+'.raw',height,width,1)
     image_tool.save_bmp_image(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'_'+str(int(np.median(new_dark)))\
                               ,new_dark, DRange_F, (width, height))
-    #image_tool.save_simple_bmp(target_file[:-4], Source_file, D_Range_1)
     image_tool.save_simple_bmp(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'_'+str(int(np.median(new_dark)))\
                                ,new_dark,DRange_F)
     image_tool.save_raw_image(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'.raw', new_dark)
@@ -68,31 +67,24 @@ def Dark_Sub_n_Sum(folder_name, target_folder, frame_num):
     if 'Bright' in case_name:
         image_tool.save_raw_image(target_folder+'/A0'+str(B_num)+'_'+QC_median+'.raw',OC_image)
         image_tool.save_raw_image(target_folder+'/'+case_name+'_OC_sum_py.raw',OC_image)
-        #image_tool.save_bmp_image(target_folder+'/'+case_name+'_OC_sum',OC_image,DRange_F,(width,height))
         image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
     else:
         image_tool.save_raw_image(target_folder+'/'+case_name+'_OC_sum_py.raw',OC_image)
-        #image_tool.save_bmp_image(target_folder+'/'+case_name+'_OC_sum',OC_image,DRange_F,(width,height))
         image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
 
     return int(np.median(new_dark))
 
 def Dark_Select(source_path,target_path,file_name):
     file_path = os.path.join(source_path,file_name)
-    # print ( 'File Path : ', file_path )
     file_list = os.listdir(file_path)
-    # print ( 'File List : ', file_list )
     for file in file_list:
         if 'Dark' in file:
             s_file = os.path.join(file_path,file)
             d_file = os.path.join(target_path,file)
-            # print('File Path : ', s_file)
-            # print('Target Path :', d_file)
             shutil.copy2(s_file,d_file)
 
 def clear_folder(folder_path):
     for (path, dir, files) in os.walk(folder_path):
-        #print(path)
         for filename in files:
             if 'Dark' in filename or '.bmp' in filename or '.jpg' in filename:
                 file_path = os.path.join(path, filename)
@@ -106,11 +98,9 @@ def extract_data(Folder_Path):
     case_median =[]
     for i in range(0, 10):
         # Raw Image Read and Masking
-        # print ( Folder_Path + '/000' + str(i) + '.raw' )
         img_temp = image_tool.open_raw_image(Folder_Path + '/000' + str(i) + '.raw', height, width, 1)
         temp_median = np.median(img_temp)
         df = df.append({'Frame #': i, 'Median':temp_median}, ignore_index=True)
-        # print ( np.median(img_temp))
         case_median.append(temp_median)
 
     df.to_excel(Folder_Path+'/Median_Signal_Variation.xlsx')
@@ -126,9 +116,6 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
     dfs = []
     for test_case in List:
         test_case_folder = os.path.join(Folder_Path, test_case)
-        #print (test_case_folder)
-        # test_case_folder = os.path.join(Folder_Path, Case)
-        #print (test_case_folder+'/Median_Signal_Variation.xlsx')
         df_each = pd.read_excel(test_case_folder+'/Median_Signal_Variation.xlsx', engine='openpyxl')
         dfs.append(df_each)
 
@@ -141,7 +128,6 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
 
     plt.figure()
     for i in range(0, 50, 10):
-        print (i)
         if i < 10:
             color = 'red'
             group_label = List[0]
@@ -194,8 +180,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     plt.scatter(x_dose,y_dn,color='blue')
     for y_value, x_value in zip(y_dn, x_dose):
         plt.text(x_value, y_value, f'{y_value}', ha='right')
-    plt.plot(x_fitting, y_fitting, color='red', linestyle='--')#,
-             #label=f'Linear Regression (R2={r2score:.2f})')
+    plt.plot(x_fitting, y_fitting, color='red', linestyle='--')
     plt.text(0.2, 0.9, f'Y = {model_coef[0]:.2f}X +( {model_intercpt:.2f} )', fontsize=10,
              transform=plt.gca().transAxes)
     plt.text(0.2, 0.85, f'R2 = {math.floor(r2score*1000)/1000}', fontsize=10,
