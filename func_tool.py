@@ -173,7 +173,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     x_dose = df['Dose']
     y_dn = df['Median']
 
-    x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearFit(x_dose,y_dn)
+    x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearRegression(x_dose,y_dn)
 
     plt.figure()
     plt.scatter(x_dose,y_dn,color='blue')
@@ -190,3 +190,4 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     plt.grid()
     plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
     plt.close()
+
