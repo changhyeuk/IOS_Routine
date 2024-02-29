@@ -31,9 +31,9 @@ df_dark = pd.DataFrame(columns=['Serise', 'Median','Hr'])
 
 for file in file_list:
     if 'DK_Info_' in file and file.endswith('.xlsx'):
-        print(file, file[8:10], file[-9:-7])
+        #print(file, file[8:10], file[-9:-7])
         df_excel = pd.read_excel(file,engine='openpyxl')
-        print(df_excel)
+        #print(df_excel)
         df_dark = df_dark.append({'Serise':int(file[8:10]),
                                    'Median':df_excel.iloc[0,1],
                                    'Hr':int(file[-9:-7])}, ignore_index=True)
@@ -69,7 +69,7 @@ plt.figure()
 j = 0
 inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet']
 for df in dfs:
-
+    print(j)
     DoseX = df['Dose'].values.reshape(-1,1)
     MedianD = df['Median'].values
 
