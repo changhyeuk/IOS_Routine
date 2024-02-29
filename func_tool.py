@@ -168,10 +168,10 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
     Test_serise = input("Which test results ? ( 01 ): ")
     Bake_hr = input ("How long baking process done? ( ex : 18 ) : ")
     output_file_name = 'Bright_Image_Info_'+Test_serise+'th_'+Bake_hr+'hr'
-    Dark_ouput_file_name = 'Dark_Info_'+Test_serise+'th_'+Bake_hr+'hr'
+    Dark_output_file_name = 'DK_Info_'+Test_serise+'th_'+Bake_hr+'hr'
 
     df.to_excel(os.path.join(Folder_Path,Out_Folder) + '/'+output_file_name+'.xlsx')
-    Dark_Info.to_excel(os.path.join(Folder_Path,Out_Folder)+'/'+Dark_ouput_file_name+'.xlsx')
+    Dark_Info.to_excel(os.path.join(Folder_Path,Out_Folder)+'/'+Dark_output_file_name+'.xlsx')
     x_dose = df['Dose'].values.reshape(-1,1)
     y_dn = df['Median'].values
 

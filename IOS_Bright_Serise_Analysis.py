@@ -30,29 +30,38 @@ df_slop = pd.DataFrame(columns=['Serise', 'Slop', 'Intercept','Max Median'])
 df_dark = pd.DataFrame(columns=['Serise', 'Median','Hr'])
 
 for file in file_list:
-    if 'Dark' in file and file.endswith('.xlsx'):
-        print(file, file[10:12], file[-9:-7])
+    if 'DK_Info_' in file and file.endswith('.xlsx'):
+        print(file, file[8:10], file[-9:-7])
         df_excel = pd.read_excel(file,engine='openpyxl')
         print(df_excel)
-        df_dark = df_dark.append({'Serise':int(file[10:12]),
+        df_dark = df_dark.append({'Serise':int(file[8:10]),
                                    'Median':df_excel.iloc[0,1],
                                    'Hr':int(file[-9:-7])}, ignore_index=True)
+print(df_dark)
 
-# print(df_dark['Serise'])
-# print(df_dark['Median'])
-# print(df_dark['Hr'])
-plt.figure()
+Ex_Serise = df_dark['Serise']
+Ex_Median = df_dark['Median']
+Temp_Med = Ex_Median[0]
+Ratio = [((value - int(Temp_Med)) / value) * 100 for value in Ex_Median]
+
+
+fig, ax1 = plt.subplots()
 df_dark['Serise'] = df_dark['Serise'].astype(str)
-plt.plot(df_dark['Serise'],df_dark['Median'],Marker='o',linestyle='-' )
-plt.xlabel('Test Serise')
-plt.ylabel('Mean [DN]')
-plt.grid(axis='y')
+ax1.plot(df_dark['Serise'],df_dark['Median'],Marker='o',linestyle='-' )
+for i in range(len(Ex_Serise)):
+    plt.text(Ex_Serise[i], Ex_Median[i], str(Ex_Median[i]), ha='left')
+ax1.set_xlabel('Test Serise')
+ax1.set_ylabel('Mean [DN]')
+ax1.set_ylim((min(Ex_Median) - 200), 2500)
+ax2 = ax1.twinx()
+ax2.plot(Ex_Serise, Ratio, 'ro-')
+ax2.set_ylabel('Dark Signal Variation with Initial Result[%]',color='red')
+plt.title('Bright 05 Dark Signal Variation')
+plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i)+'_Dark_Signal_Variation.jpg', bbox_inches='tight')
 
 for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
-        #print(file, file[-9:-7])
         df_each = pd.read_excel(file, engine='openpyxl')
-        #print (df_each)
         dfs.append(df_each)
         df_hr.append(int(file[-9:-7]))
 
@@ -81,6 +90,7 @@ plt.xlim([0, max(DoseX_fit)])
 plt.ylim([0, 3000])
 plt.xlabel('Exposure Dose[uGy]')
 plt.ylabel('Mean [DN]')
+plt.title('X-ray Response Variation')
 plt.grid()
 plt.legend()
 plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(j)+'_Xray_ResponseCurve_Sum.jpg', bbox_inches='tight')
