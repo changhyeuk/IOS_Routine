@@ -149,7 +149,7 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 
-def X_Response(Folder_Path,Out_Folder,ExposureT):
+def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
     # # uGy = 1220.2 x sec  + 3.5293
     df = pd.DataFrame(columns=['Bright','sec','Dose', 'STD', 'Median'])
 
@@ -168,10 +168,12 @@ def X_Response(Folder_Path,Out_Folder,ExposureT):
     Test_serise = input("Which test results ? ( 01 ): ")
     Bake_hr = input ("How long baking process done? ( ex : 18 ) : ")
     output_file_name = 'Bright_Image_Info_'+Test_serise+'th_'+Bake_hr+'hr'
-    df.to_excel(os.path.join(Folder_Path,Out_Folder) + '/'+output_file_name+'.xlsx')
+    Dark_ouput_file_name = 'Dark_Info_'+Test_serise+'th_'+Bake_hr+'hr'
 
-    x_dose = df['Dose']
-    y_dn = df['Median']
+    df.to_excel(os.path.join(Folder_Path,Out_Folder) + '/'+output_file_name+'.xlsx')
+    Dark_Info.to_excel(os.path.join(Folder_Path,Out_Folder)+'/'+Dark_ouput_file_name+'.xlsx')
+    x_dose = df['Dose'].values.reshape(-1,1)
+    y_dn = df['Median'].values
 
     x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearRegression(x_dose,y_dn)
 

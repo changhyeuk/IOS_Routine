@@ -5,15 +5,8 @@ from sklearn.metrics import r2_score
 
 def linearRegression(x_data, y_data):
 
-    # x_measure = x_data.values.reshape(-1,1)
-    # y_measure = y_data.values
-
     x_measure = x_data.reshape(-1,1)
     y_measure = y_data
-
-    # x_measure = x_data.values
-    # y_measure = y_data.values
-
 
     model = LinearRegression()
     model.fit(x_measure, y_measure)

@@ -22,16 +22,37 @@ height = 2230
 
 file_list = os.listdir(folder_path)
 dfs = []
+dfd = []
 df_hr =[]
 max_median =[]
 
 df_slop = pd.DataFrame(columns=['Serise', 'Slop', 'Intercept','Max Median'])
+df_dark = pd.DataFrame(columns=['Serise', 'Median','Hr'])
+
+for file in file_list:
+    if 'Dark' in file and file.endswith('.xlsx'):
+        print(file, file[10:12], file[-9:-7])
+        df_excel = pd.read_excel(file,engine='openpyxl')
+        print(df_excel)
+        df_dark = df_dark.append({'Serise':int(file[10:12]),
+                                   'Median':df_excel.iloc[0,1],
+                                   'Hr':int(file[-9:-7])}, ignore_index=True)
+
+# print(df_dark['Serise'])
+# print(df_dark['Median'])
+# print(df_dark['Hr'])
+plt.figure()
+df_dark['Serise'] = df_dark['Serise'].astype(str)
+plt.plot(df_dark['Serise'],df_dark['Median'],Marker='o',linestyle='-' )
+plt.xlabel('Test Serise')
+plt.ylabel('Mean [DN]')
+plt.grid(axis='y')
 
 for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
-        print(file, file[-9:-7])
+        #print(file, file[-9:-7])
         df_each = pd.read_excel(file, engine='openpyxl')
-        print (df_each)
+        #print (df_each)
         dfs.append(df_each)
         df_hr.append(int(file[-9:-7]))
 
@@ -39,9 +60,7 @@ plt.figure()
 j = 0
 inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet']
 for df in dfs:
-    print(df)
-    # DoseX = df['Dose'].values.reshape(-1,1)
-    # MedianD = df['Median'].values
+
     DoseX = df['Dose'].values.reshape(-1,1)
     MedianD = df['Median'].values
 
@@ -102,3 +121,7 @@ ax2.set_xlim([0, x_max])
 ax2.set_ylim([min(y_fit_max)*0.9, max(y_fit_max)*1.1])
 plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(j)+'_X_Response_Slop_by_Baking.jpg', bbox_inches='tight')
 plt.show()
+
+
+
+

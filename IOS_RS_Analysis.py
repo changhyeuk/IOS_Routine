@@ -2,6 +2,7 @@
 
 import os
 import matplotlib.pyplot as plt
+import pandas as pd
 import func_tool
 
 # Set folder path
@@ -53,13 +54,16 @@ if __name__ == "__main__":
         print( ' Not Ok ')
         update_x_begin = input("Update the x-ray begin frame : ")
         new_x_begin = [int(xframe) for xframe in update_x_begin.split()]
-        print ()
+        print (update_x_begin)
 
     x_i = 0
+    df_dark = pd.DataFrame(columns=['Median'])
     for test_case in folder_list:
         test_case_folder = os.path.join(folder_path,test_case)
         d_value = func_tool.Dark_Sub_n_Sum(test_case_folder,output_path, new_x_begin[x_i])
         print('Case : ', test_case, ' , Dark Median : ', d_value)
+        if 'Bright_05' in test_case:
+            df_dark = df_dark.append({'Median':d_value}, ignore_index=True)
         case_name.append(test_case)
         dark_level.append(d_value)
         x_i += 1
@@ -84,7 +88,7 @@ if __name__ == "__main__":
 
     # Plot the all sum median value
     func_tool.Sum_extract_Data(folder_path,folder_list, output_folder )
-    func_tool.X_Response(folder_path,output_folder,X_exp_time)
+    func_tool.X_Response(folder_path,output_folder,X_exp_time,df_dark)
 
     # Copy Dark frame from each case to ./Vadav_Cal/Raw_Data
     for test_case in folder_list:
