@@ -149,6 +149,30 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 
+
+def Single_extract_Data(Folder_Path, List, Out_Folder):
+    dfs = []
+    for test_case in List:
+        test_case_folder = os.path.join(Folder_Path, test_case)
+        df_each = pd.read_excel(test_case_folder+'/Median_Signal_Variation.xlsx', engine='openpyxl')
+        dfs.append(df_each)
+
+    Case_Out_folder = os.path.join(Folder_Path, Out_Folder)
+
+    merged_df = pd.concat(dfs,ignore_index=True)
+    merged_df.to_excel(Case_Out_folder+'/All_Median_Signal_Variation.xlsx')
+
+    x_median = merged_df['Median']
+
+    plt.figure()
+    plt.plot(x_median, linestyle='-', marker='o', color='blue')#,label=group_label)
+    plt.legend(loc='upper center')
+    plt.xlabel('Obtained Frame [#]')
+    plt.ylabel('Median [DN]')
+    plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
+    plt.close()
+
+
 def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
     # # uGy = 1220.2 x sec  + 3.5293
     df = pd.DataFrame(columns=['Bright','sec','Dose', 'STD', 'Median'])
@@ -158,7 +182,9 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
         file_string = 'A0'+str(num)
         num=num+1
         out_files = os.listdir(Folder_Path+Out_Folder)
+        print(out_files)
         match_files = [file for file in out_files if file_string in file]
+        print('match_files : ', match_files)
         targe_file = os.path.join(Folder_Path,Out_Folder,match_files[0])
         select_image = image_tool.open_raw_image(targe_file, height, width, 1)
         cal_dose = 1220.2*float(i)+ 3.5293
@@ -189,6 +215,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
     plt.ylim([0,2500])
+    plt.xlim([0, max(x_fitting)])
     plt.grid()
     plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
     plt.close()

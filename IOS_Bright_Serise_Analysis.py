@@ -29,6 +29,12 @@ max_median =[]
 df_slop = pd.DataFrame(columns=['Serise', 'Slop', 'Intercept','Max Median'])
 df_dark = pd.DataFrame(columns=['Serise', 'Median','Hr'])
 
+# Output folder check
+output_path = os.path.join(folder_path, target_folder)
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+
+
 for file in file_list:
     if 'DK_Info_' in file and file.endswith('.xlsx'):
         #print(file, file[8:10], file[-9:-7])
@@ -57,7 +63,7 @@ ax2 = ax1.twinx()
 ax2.plot(Ex_Serise, Ratio, 'ro-')
 ax2.set_ylabel('Dark Signal Variation with Initial Result[%]',color='red')
 plt.title('Bright 05 Dark Signal Variation')
-plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i)+'_Dark_Signal_Variation.jpg', bbox_inches='tight')
+plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i+1)+'_Dark_Signal_Variation.jpg', bbox_inches='tight')
 
 for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
