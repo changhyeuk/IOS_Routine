@@ -35,7 +35,7 @@ def save_bmp_image(file_path, img, DynamicRange, DisplaySize):
     # Image Resize to display
     resized_i = cv2.resize(scaled_image.astype(np.uint16), (DisplaySize[0], DisplaySize[1]))
     #cv2.imwrite(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', resized_i)
-    cv2.imwrite(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', scaled_image)
+    cv2.imwrite(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', scaled_image[::4,::4])
 
 def save_simple_bmp(file_path, img, DynamicRange):
     plt.imsave(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', img, cmap='gray', vmin=DynamicRange[0], vmax=DynamicRange[1])
