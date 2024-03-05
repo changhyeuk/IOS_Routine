@@ -182,9 +182,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
         file_string = 'A0'+str(num)
         num=num+1
         out_files = os.listdir(Folder_Path+Out_Folder)
-        print(out_files)
         match_files = [file for file in out_files if file_string in file]
-        print('match_files : ', match_files)
         targe_file = os.path.join(Folder_Path,Out_Folder,match_files[0])
         select_image = image_tool.open_raw_image(targe_file, height, width, 1)
         cal_dose = 1220.2*float(i)+ 3.5293
