@@ -66,7 +66,7 @@ def Dark_Sub_n_Sum(folder_name, target_folder, frame_num):
     if 'Bright' in case_name:
         image_tool.save_raw_image(target_folder+'/A0'+str(B_num)+'_'+QC_median+'.raw',OC_image)
         image_tool.save_raw_image(target_folder+'/'+case_name+'_OC_sum_py.raw',OC_image)
-        image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
+        #image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
     else:
         image_tool.save_raw_image(target_folder+'/'+case_name+'_OC_sum_py.raw',OC_image)
         image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
@@ -80,7 +80,6 @@ def Dark_Select(source_path,target_path,file_name):
         if 'Dark' in file:
             s_file = os.path.join(file_path,file)
             d_file = os.path.join(target_path,file)
-            shutil.copy2(s_file,d_file)
             shutil.move(s_file,d_file)
 
 def clear_folder(folder_path):

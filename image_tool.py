@@ -38,8 +38,9 @@ def save_bmp_image(file_path, img, DynamicRange, DisplaySize):
     cv2.imwrite(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', scaled_image[::4,::4])
 
 def save_simple_bmp(file_path, img, DynamicRange):
-    plt.imsave(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', img, cmap='gray', vmin=DynamicRange[0], vmax=DynamicRange[1])
-
+    #plt.imsave(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', img, cmap='gray', vmin=DynamicRange[0], vmax=DynamicRange[1])
+    norm_image = ( ( np.clip(img,DynamicRange[0],DynamicRange[1]) ) / DynamicRange[1]) * 256
+    cv2.imwrite(file_path +'_'+ str(DynamicRange[0])+'_'+ str(DynamicRange[1]) + '_py.bmp', norm_image)
     
 def save_raw_image(file_path, raw_image):
     with open(file_path, 'wb') as f:
