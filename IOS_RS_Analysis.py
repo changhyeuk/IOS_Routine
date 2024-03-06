@@ -92,5 +92,5 @@ if __name__ == "__main__":
 
     # Copy Dark frame from each case to ./Vadav_Cal/Raw_Data
     for test_case in folder_list:
-        print ('Used Dark at ',test_case,' case is copied ')
+        print ('Used Dark at ',test_case,' case is Moved ')
         func_tool.Dark_Select(folder_path,output_path,test_case)

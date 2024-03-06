@@ -81,6 +81,7 @@ def Dark_Select(source_path,target_path,file_name):
             s_file = os.path.join(file_path,file)
             d_file = os.path.join(target_path,file)
             shutil.copy2(s_file,d_file)
+            shutil.move(s_file,d_file)
 
 def clear_folder(folder_path):
     for (path, dir, files) in os.walk(folder_path):
