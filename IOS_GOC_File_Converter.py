@@ -7,7 +7,7 @@ import image_tool
 # Set Parameter
 #======================================================
 # Read the file name at the folder
-folder_path = r'./Vadav_Cal/Raw_Data/'
+folder_path = r'./Raw_Data/'
 width = 1620
 height = 2230
 # Define Dynamic Range

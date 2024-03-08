@@ -9,7 +9,7 @@ import func_tool
 folder_path = './'
 folder_list = ['Resol_05']
 output_folder = 'Raw_Data'
-X_exp_time = ['0.3']
+X_exp_time = ['0.5']
 
 # Set global variable
 width = 1620
