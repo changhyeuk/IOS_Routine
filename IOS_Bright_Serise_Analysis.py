@@ -42,7 +42,7 @@ for file in file_list:
         #print(df_excel)
         df_dark = df_dark.append({'Serise':int(file[8:10]),
                                    'Median':df_excel.iloc[0,1],
-                                   'Hr':int(file[-9:-7])}, ignore_index=True)
+                                   'Hr':int(file[-10:-7])}, ignore_index=True)
 print(df_dark)
 
 Ex_Serise = df_dark['Serise']
@@ -69,7 +69,7 @@ for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
         df_each = pd.read_excel(file, engine='openpyxl')
         dfs.append(df_each)
-        df_hr.append(int(file[-9:-7]))
+        df_hr.append(int(file[-10:-7]))
 
 plt.figure()
 j = 0

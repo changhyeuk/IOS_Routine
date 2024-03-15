@@ -190,7 +190,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
                         'Median':int(np.median(select_image))}, ignore_index=True)
 
     Test_serise = input("Which test results ? ( 01 ): ")
-    Bake_hr = input ("How long baking process done? ( ex : 18 ) : ")
+    Bake_hr = input ("How long baking process done? ( ex : 018 ) : ")
     output_file_name = 'Bright_Image_Info_'+Test_serise+'th_'+Bake_hr+'hr'
     Dark_output_file_name = 'DK_Info_'+Test_serise+'th_'+Bake_hr+'hr'
 
