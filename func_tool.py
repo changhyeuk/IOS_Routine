@@ -27,6 +27,10 @@ def find_x_frame(folder_name,threshold):
         num = num + 1
         if j > threshold:
             file_index.append(num)
+    #print(file_index)
+    if not file_index:
+        file_index.append(5)
+
     x_begin = file_index[0]
     plt.plot(np.diff(ave_frame), 'bo-')
     plt.xlabel('Obtained Frame [#]')
@@ -146,6 +150,7 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
         plt.legend(loc='upper center')
     plt.xlabel('Obtained Frame [#]')
     plt.ylabel('Median [DN]')
+    plt.ylim([1000,3000])
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 

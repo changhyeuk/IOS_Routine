@@ -20,7 +20,8 @@ target_folder = 'Vadav_Cal\Raw_Data'
 width = 1620
 height = 2230
 
-file_list = os.listdir(folder_path)
+file_list = os.listdir(folder_path+target_folder)
+
 dfs = []
 dfd = []
 df_hr =[]
@@ -38,12 +39,14 @@ if not os.path.exists(output_path):
 for file in file_list:
     if 'DK_Info_' in file and file.endswith('.xlsx'):
         #print(file, file[8:10], file[-9:-7])
-        df_excel = pd.read_excel(file,engine='openpyxl')
+        target_path = os.path.join(folder_path,target_folder,'/',file)
+        print(folder_path+target_folder+'/'+file)
+        df_excel = pd.read_excel(folder_path+target_folder+'/'+file,engine='openpyxl')
         #print(df_excel)
         df_dark = df_dark.append({'Serise':int(file[8:10]),
                                    'Median':df_excel.iloc[0,1],
                                    'Hr':int(file[-10:-7])}, ignore_index=True)
-print(df_dark)
+#print(df_dark)
 
 Ex_Serise = df_dark['Serise']
 Ex_Median = df_dark['Median']
@@ -53,7 +56,7 @@ Ratio = [((value - int(Temp_Med)) / value) * 100 for value in Ex_Median]
 
 fig, ax1 = plt.subplots()
 df_dark['Serise'] = df_dark['Serise'].astype(str)
-ax1.plot(df_dark['Serise'],df_dark['Median'],Marker='o',linestyle='-' )
+ax1.plot(df_dark['Serise'],df_dark['Median'],marker='o',linestyle='-' )
 for i in range(len(Ex_Serise)):
     plt.text(Ex_Serise[i], Ex_Median[i], str(Ex_Median[i]), ha='left')
 ax1.set_xlabel('Test Serise')
@@ -67,7 +70,8 @@ plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i+1)+'_Dark_Signal_V
 
 for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
-        df_each = pd.read_excel(file, engine='openpyxl')
+        print(folder_path + target_folder + '/' + file)
+        df_each = pd.read_excel(folder_path+target_folder+'/'+file, engine='openpyxl')
         dfs.append(df_each)
         df_hr.append(int(file[-10:-7]))
 
@@ -75,7 +79,6 @@ plt.figure()
 j = 0
 inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet']
 for df in dfs:
-    print(j)
     DoseX = df['Dose'].values.reshape(-1,1)
     MedianD = df['Median'].values
 
