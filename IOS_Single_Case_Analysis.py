@@ -7,7 +7,7 @@ import func_tool
 
 # Set folder path
 folder_path = './'
-folder_list = ['Resol_05']
+folder_list = ['Bright_05']
 output_folder = 'Raw_Data'
 X_exp_time = ['0.5']
 

@@ -217,7 +217,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
              transform=plt.gca().transAxes)
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
-    plt.ylim([0,2500])
+    plt.ylim([0,3000])
     plt.xlim([0, max(x_fitting)])
     plt.grid()
     plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
