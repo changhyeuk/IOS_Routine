@@ -77,7 +77,9 @@ for file in file_list:
 
 plt.figure()
 j = 0
-inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet','navy','seagreen']
+inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet',
+                'navy','seagreen', 'crimson', 'lawngreen']
+
 for df in dfs:
     DoseX = df['Dose'].values.reshape(-1,1)
     MedianD = df['Median'].values

@@ -89,11 +89,15 @@ def Dark_Select(source_path,target_path,file_name):
 def clear_folder(folder_path):
     for (path, dir, files) in os.walk(folder_path):
         for filename in files:
-            if 'Dark' in filename or '.bmp' in filename or '.jpg' in filename:
+            if 'Dark' in filename or '.bmp' in filename or '.jpg' in filename or '.xlsx' in filename:
                 file_path = os.path.join(path, filename)
                 os.remove(file_path)
         if 'Vadav_Cal' in path:
             shutil.rmtree(path)
+
+def list_subfolders(folder_path):
+    subfolders = [f.name for f in os.scandir(folder_path) if f.is_dir()]
+    return subfolders
 
 def extract_data(Folder_Path):
     print ( Folder_Path )
@@ -217,9 +221,46 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
              transform=plt.gca().transAxes)
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
+    plt.title(' X-ray Response Curve ')
     plt.ylim([0,3000])
     plt.xlim([0, max(x_fitting)])
     plt.grid()
     plt.savefig(os.path.join(Folder_Path,Out_Folder)+'/'+output_file_name+'.jpg', bbox_inches='tight')
     plt.close()
 
+def Dark_SubNSum(folder_name, target_folder, frame_num):
+
+    folders = os.path.split(folder_name)
+    case_name = folders[-1]
+
+    if 'Bright_01' in case_name:
+        B_num = 0
+    elif 'Bright_03' in case_name:
+        B_num = 1
+    elif 'Bright_05' in case_name:
+        B_num = 2
+
+    OC_image = np.zeros((height, width), dtype=np.int16)
+
+    new_dark = image_tool.open_raw_image(folder_name+'/000'+str(frame_num-1)+'.raw',height,width,1)
+    image_tool.save_bmp_image(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'_'+str(int(np.median(new_dark)))\
+                              ,new_dark, DRange_F, (width, height))
+    image_tool.save_simple_bmp(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'_'+str(int(np.median(new_dark)))\
+                               ,new_dark,DRange_F)
+    image_tool.save_raw_image(folder_name+'/'+case_name+'_Dark_000'+str(frame_num-1)+'.raw', new_dark)
+
+    for k in range(frame_num,frame_num+3):
+        img_temp = image_tool.open_raw_image(folder_name + '/000' + str(k) + '.raw', height, width, 1)
+        OC_image_temp = img_temp - new_dark
+        OC_image = OC_image + OC_image_temp
+        QC_median = str(int(np.median(OC_image))).zfill(5)
+
+    if 'Bright' in case_name:
+        image_tool.save_raw_image(target_folder+'/A0'+str(B_num)+'_'+QC_median+'.raw',OC_image)
+        image_tool.save_raw_image(target_folder+'/'+case_name+'_OC_sum_py.raw',OC_image)
+        #image_tool.save_simple_bmp(target_folder+'/'+case_name+'_OC_sum',OC_image, DRange_F)
+    else:
+        image_tool.save_raw_image(target_folder+'/'+case_name+'_'+QC_median+'_OC_sum_py.raw',OC_image)
+        image_tool.save_simple_bmp(target_folder+'/'+case_name+'_'+QC_median+'_OC_sum',OC_image, DRange_F)
+
+    return int(np.median(new_dark)), int(np.median(OC_image))
