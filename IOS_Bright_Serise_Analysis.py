@@ -66,7 +66,7 @@ ax2 = ax1.twinx()
 ax2.plot(Ex_Serise, Ratio, 'ro-')
 ax2.set_ylabel('Dark Signal Variation with Initial Result[%]',color='red')
 plt.title('Bright 05 Dark Signal Variation')
-plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i+1)+'_Dark_Signal_Variation.jpg', bbox_inches='tight')
+plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i+1)+'_Dark_Signal_Variation.jpg')
 
 for file in file_list:
     if 'Bright' in file and file.endswith('.xlsx'):
@@ -77,8 +77,9 @@ for file in file_list:
 
 plt.figure()
 j = 0
-inner_colors = ['royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet',
-                'navy','seagreen', 'crimson', 'lawngreen']
+inner_colors = ['red','royalblue', 'forestgreen', 'goldenrod', 'darkorange','lightcoral','fuchsia','blueviolet',
+                'navy','seagreen', 'crimson', 'lawngreen', 'olive', 'orangered', 'dimgrey', 'fuchsia', 'blue',
+                'aqua', 'lime','darkkhaki','saddlebrown','darkred']
 
 for df in dfs:
     DoseX = df['Dose'].values.reshape(-1,1)

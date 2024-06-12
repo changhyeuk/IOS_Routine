@@ -264,3 +264,12 @@ def Dark_SubNSum(folder_name, target_folder, frame_num):
         image_tool.save_simple_bmp(target_folder+'/'+case_name+'_'+QC_median+'_OC_sum',OC_image, DRange_F)
 
     return int(np.median(new_dark)), int(np.median(OC_image))
+
+# def generate_colors(n):
+#     return plt.cm.viridis(np.linspace(0, 1, n))
+#
+# def get_colors(n):
+#     if n <= len(inner_colors):
+#         return inner_colors
+#     else:
+#         return generate_colors(n)
