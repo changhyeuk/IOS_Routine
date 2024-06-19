@@ -265,11 +265,33 @@ def Dark_SubNSum(folder_name, target_folder, frame_num):
 
     return int(np.median(new_dark)), int(np.median(OC_image))
 
-# def generate_colors(n):
-#     return plt.cm.viridis(np.linspace(0, 1, n))
-#
-# def get_colors(n):
-#     if n <= len(inner_colors):
-#         return inner_colors
-#     else:
-#         return generate_colors(n)
+def Dark_Case_Plot(outputfolder,df):
+    print (df)
+    Dark_case = df['Bright']
+    Dark_median = df['Dark_Median']
+
+    base_value = Dark_median[0]
+    percentage_change = [(value - base_value) / base_value * 100 for value in Dark_median]
+
+    fig, ax1 = plt.subplots()
+
+    ax1.plot(Dark_case, Dark_median, linestyle='-', marker='o', color='orange')
+    for i, value in enumerate(Dark_median):
+        ax1.text(Dark_case[i], value + 20, str(value), ha='center')
+
+    ax1.set_ylim([0, 4095])
+    ax1.set_xlabel('Test Case')
+    ax1.set_ylabel('Median [DN]')
+    ax1.set_title('Dark Median Variation')
+    ax1.grid()
+
+    # Create a second y-axis for the percentage change
+    ax2 = ax1.twinx()
+    ax2.plot(Dark_case, percentage_change, linestyle='--', marker='x', color='red')
+    for i, pct in enumerate(percentage_change):
+        ax2.text(Dark_case[i], pct + 2, f'{pct:.1f}%', ha='center', color='red')
+    ax2.set_ylim([0, 100])
+    ax2.set_ylabel('Percentage Change [%]', color='red')
+    ax2.tick_params(axis='y', labelcolor='red')
+
+    plt.savefig(outputfolder+'/Dark_Varation.jpg',bbox_inches='tight')
