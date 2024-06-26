@@ -105,7 +105,7 @@ if __name__ == "__main__":
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
     plt.title(' X-ray Response Curve ')
-    plt.ylim([0,4000])
+    plt.ylim([0,4095])
     plt.xlim([0, max(x_fitting)])
     plt.grid()
     plt.savefig(output_folder+'/Xray_response.jpg', bbox_inches='tight')
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         #             files_with_plus.append(int(match.group(1)))
         #
         # Dark_image_name = 'D000'+str( int( files_with_plus[0])-1 ) +'.raw'
-        Dark_image_name = '0000.raw'
+        Dark_image_name = 'dark.raw'
         Dark_image_path = test_case_folder+'/'+Dark_image_name
         D_raw_image = image_tool.open_raw_image(Dark_image_path,height,width,1)
         Dark_median = str(int(np.median(D_raw_image))).zfill(5)
@@ -140,6 +140,6 @@ if __name__ == "__main__":
         shutil.move(New_D_image_name, Raw_file_loc)
 
     func_tool.Dark_Case_Plot(output_folder, df_dark)
-    #print ( df_dark )
+    print ( df_dark )
     # for file_name in os.listdir(output_folder):
     #     print (file_name)
