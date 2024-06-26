@@ -99,7 +99,7 @@ for df in dfs:
         plt.text(x_value, y_value, f'{int(y_value):d}', ha='right')
     j=j+1
     #print ( max(DoseX_fit))
-plt.xlim([0, 670])#max(DoseX_fit)])
+plt.xlim([0, max(DoseX_fit)])
 plt.ylim([0, 4000])
 plt.xlabel('Exposure Dose[uGy]')
 plt.ylabel('Mean [DN]')
