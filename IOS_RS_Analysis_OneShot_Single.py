@@ -45,3 +45,5 @@ if __name__ == "__main__":
         target_median = str(int(np.median(raw_image))).zfill(4)
         Save_file_name = target_name+'_'+ target_median
         image_tool.save_simple_bmp(output_folder + '/' + Save_file_name, raw_image, DRange_F)
+        print(target_file_path)
+        shutil.copy(target_file_path,output_folder+'/'+Save_file_name+'.raw')
