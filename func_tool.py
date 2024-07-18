@@ -295,3 +295,12 @@ def Dark_Case_Plot(outputfolder,df):
     ax2.tick_params(axis='y', labelcolor='red')
 
     plt.savefig(outputfolder+'/Dark_Varation.jpg',bbox_inches='tight')
+
+def Dynamic_Range_Selection(raw_i):
+    temp = int(np.median(raw_i))
+    if temp > 3500:
+        DR_Max = 4095
+    else:
+        DR_Max = ((int(np.median(raw_i)) + 499) // 500) * 500
+    DR = (0, DR_Max)
+    return DR
