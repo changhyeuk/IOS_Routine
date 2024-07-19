@@ -118,21 +118,12 @@ if __name__ == "__main__":
         # print ( test_case )
         files_with_plus = []
         test_case_folder = os.path.join(folder_path,test_case)
-        # for file_name in os.listdir(test_case_folder):
-        #     if '+' in file_name:
-        #         match = pattern.match(file_name)
-        #         if match:
-        #             #print( int(match.group(1)),file_name)
-        #             files_with_plus.append(int(match.group(1)))
-        #
-        # Dark_image_name = 'D000'+str( int( files_with_plus[0])-1 ) +'.raw'
+
         Dark_image_name = 'D0000.raw'
         Dark_image_path = test_case_folder+'/'+Dark_image_name
         D_raw_image = image_tool.open_raw_image(Dark_image_path,height,width,1)
         Dark_median = str(int(np.median(D_raw_image))).zfill(4)
-        # df_dark = pd.DataFrame(columns=['Bright', 'Dark_Median'])
-        # if 'Bright_025' in test_case:
-        #     print ( 'Bright05 ', str(int(np.median(D_raw_image))))
+
         df_dark = df_dark.append({'Bright':test_case, 'Dark_Median': int(np.median(D_raw_image))}, ignore_index=True)
         New_D_image_name = test_case + '_' + Dark_image_name[:-4]+'_'+Dark_median+'.raw'
         image_tool.save_raw_image(New_D_image_name, D_raw_image)
@@ -142,6 +133,3 @@ if __name__ == "__main__":
 
     df_dark.to_excel(output_folder + '/' + Dark_output_file_name + '.xlsx')
     func_tool.Dark_Case_Plot(output_folder, df_dark)
-    #print ( df_dark )
-    # for file_name in os.listdir(output_folder):
-    #     print (file_name)
