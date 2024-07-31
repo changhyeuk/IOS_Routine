@@ -11,10 +11,10 @@ import math
 
 # Set folder path
 folder_path = './'
-#folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
-folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
+folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
+#folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
-X_exp_time = ['0.05','0.15','0.25']
+X_exp_time = ['0.1','0.3','0.5']
 
 # Set global variable
 width = 1620
@@ -42,13 +42,12 @@ if __name__ == "__main__":
     # Measure the median in each test case
     for test_case in folder_list:
 
-        #if 'Bright_005' in test_case:
         if folder_list[0] in test_case:
-            B_num = 0
+            B_num = 2
         elif folder_list[1] in test_case:
             B_num = 1
         elif folder_list[2] in test_case:
-            B_num = 2
+            B_num = 0
         else :
             B_num= 3
 
@@ -57,7 +56,7 @@ if __name__ == "__main__":
         raw_image = image_tool.open_raw_image(target_file_path,height,width,1)
         # print ( np.median(raw_image))
 
-        print(test_case)
+        print(test_case, B_num)
 
         if B_num < 3:
             Bright_median = str(int(np.median(raw_image))).zfill(4)

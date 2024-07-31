@@ -9,10 +9,10 @@ import numpy as np
 
 # Set folder path
 folder_path = './'
-folder_list = ['Bright_05', 'Bright_03', 'Bright_01']
+folder_list = ['Bright_05']#, 'Bright_03', 'Bright_01']
 output_folder = 'Raw_Data'
 X_exp_time = ['0.5']
-T_file_list = ['Bright.raw', 'D0001.raw']
+T_file_list = ['D0001.raw']#['Bright.raw', 'D0001.raw']
 
 # Set global variable
 width = 1620
