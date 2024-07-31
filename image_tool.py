@@ -50,7 +50,7 @@ def onclick(event, array):
     x = event.xdata
     y = event.ydata
     array.append((x, y))
-    #print(f"Click Location : x={x}, y={y}")
+    print(f"Click Location : x={x}, y={y}")
 
 def digit_points(array):
     point_data = np.round(array)

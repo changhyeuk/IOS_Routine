@@ -8,6 +8,7 @@ import pandas as pd
 import re
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
+import matplotlib.patches as patches
 import math
 
 from IOS_RS_Analysis import width, height, DRange_F, DRange_N
@@ -304,3 +305,39 @@ def Dynamic_Range_Selection(raw_i):
         DR_Max = ((int(np.median(raw_i)) + 499) // 500) * 500
     DR = (0, DR_Max)
     return DR
+
+def ROI_Selection(T_file, Range):
+    clicked_points = []
+    print(np.min(T_file), np.max(T_file))
+
+    T_max_500 = 500 * round(np.max(T_file) / 500)
+
+    fig, ax = plt.subplots()
+    ax.imshow(T_file, cmap='gray', vmin=np.min(T_file), vmax=np.max(T_file))
+    fig.canvas.mpl_connect('button_press_event', lambda event: image_tool.onclick(event, clicked_points))
+    plt.show()
+
+    point_i, point_e, s_width, s_height = image_tool.digit_points(clicked_points)
+    print(point_i, point_e, s_width, s_height)
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.imshow(T_file, cmap='gray', vmin=np.min(T_file), vmax=T_max_500)
+    ax1.set_title('Original Image')
+    # ax1.axis('off')
+    ax1.get_xaxis().set_visible(False)
+    ax1.get_yaxis().set_visible(False)
+
+    # rect = patches.Rectangle(point_i, s_width, s_height, linewidth=1, edgecolor='r', facecolor='none')
+    rect = patches.Rectangle(point_i, s_width, int(s_width * 1.37), linewidth=1, edgecolor='r', facecolor='none')
+
+    ax1.add_patch(rect)
+    select_image = T_file[int(point_i[1]):int(point_i[1] + (point_e[0] - point_i[0]) * 1.3765),
+                   int(point_i[0]): int(point_e[0])]
+
+    ax2.imshow(select_image, cmap='gray', vmin=np.min(T_file), vmax=T_max_500)
+    # ax2.axis('off')
+    ax2.get_xaxis().set_visible(False)
+    ax2.get_yaxis().set_visible(False)
+    ax2.set_title(f'Selected Area\nRange [{np.min(T_file)} {T_max_500}]')
+    # fig.suptitle('UB97 ' +str(file_list) + ' ['+ str(N_Range_1[0])+' '+str(N_Range_1[1]) +']')
+    #plt.savefig(folder_path + file_list[0] + '_ImageSelection.tif')
+    plt.show()
