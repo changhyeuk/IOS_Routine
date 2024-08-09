@@ -11,6 +11,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import r2_score
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import math
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -118,23 +119,40 @@ for file in file_list:
     if 'DK' in file and file.endswith('.xlsx'):
         print(folder_path + target_folder + '/' + file)
         df_each = pd.read_excel(folder_path+target_folder+'/'+file, engine='openpyxl')
-        value = df_each.loc[df_each['Bright'] == 'Bright_025', 'Dark_Median'].values[0]
+        value = df_each.loc[df_each['Bright'] == 'Bright_05', 'Dark_Median'].values[0]
         dfs_dark.append(value)
         #dfss.append(df_each)
 print(dfs_dark)
 print(df_case)
 
-plt.figure()
-plt.plot(df_case,dfs_dark,marker='o', linestyle='-')
-#plt.xlim([min(df_case), max(df_case)])
-plt.ylim([0, 4000])
-plt.xlabel('Test Serise')
-plt.ylabel('Mean [DN]')
-plt.title('Dark Signal Variation')
-plt.grid()
+fig, ax1 = plt.subplots()
+
+ax1.plot(df_case,dfs_dark,marker='o', linestyle='-')
+ax1.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+for i, value in enumerate(dfs_dark):
+    ax1.text(df_case[i], value, str(value), fontsize=9, ha='right')
+
+ax1.set_xlim([0, max(df_case)+1])
+ax1.set_ylim([0, 4000])
+ax1.set_xlabel('Test Serise')
+ax1.set_ylabel('Mean [DN]')
+ax1.set_title('Dark Signal Variation')
+ax1.grid()
+
+ax2 = plt.gca().twinx()
+# percent_change = np.diff(dfs_dark) / dfs_dark[:-1] * 100
+# percent_change = np.concatenate(([0], percent_change))
+percent_change = ( dfs_dark / dfs_dark[0] ) * 100
+ax2.plot(df_case, percent_change, marker='s', linestyle='--', color='red', label='Percent Change')
+
+for i, value in enumerate(percent_change):
+    ax2.text(df_case[i], value, f'{value:.1f}%', fontsize=9, color='red', ha='left')
+
+ax2.set_ylim([min(percent_change) - 10, max(percent_change) + 10])
+ax2.set_ylabel('Percent Change (%)', color='red')
+ax2.tick_params(axis='y', labelcolor='red')
+plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(i+1)+'_Dark_Signal_Variation.jpg')
 plt.show()
-
-
 
 #
 # df_slop['Total Hr']=df_slop['Serise'].cumsum()

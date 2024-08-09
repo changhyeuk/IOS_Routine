@@ -39,7 +39,20 @@ if __name__ == "__main__":
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
+    A_type = input("Will you use ROI for analysis ? ( ex : y or n ) : ")
+    print ( 'Your answer is : ', A_type )
+    if A_type == "y":
+        print(folder_list[0])
+        ROI_test_case_folder = os.path.join(folder_path, folder_list[0])
+        ROI_file_path = ROI_test_case_folder + '/D0000.raw'
+        ROI_raw_image = image_tool.open_raw_image(ROI_file_path, height, width, 1)
+        pi, pe, ratio = func_tool.ROI_Selection(ROI_raw_image,0)
+        print("position : ", pi, pe)
+    else:
+        print(" ROI will not use")
+
     # Measure the median in each test case
+
     for test_case in folder_list:
 
         if folder_list[0] in test_case: # first bright image
@@ -53,15 +66,17 @@ if __name__ == "__main__":
 
         test_case_folder = os.path.join(folder_path,test_case)
         target_file_path = test_case_folder+'/'+target_name+'.raw'
-        raw_image = image_tool.open_raw_image(target_file_path,height,width,1)
-
-        if B_num == 2:
-            print( " the frist image is ", test_case)
-            func_tool.ROI_Selection(raw_image, DRange_N)
+        raw_image_t = image_tool.open_raw_image(target_file_path,height,width,1)
 
         print(test_case, B_num)
 
         if B_num < 3:
+            if A_type == "y":
+                print( "A_type : ", A_type, pi, pe, ratio )
+                raw_image = raw_image_t[int(pi[1]):int(pi[1] + (pe[0] - pi[0]) * ratio),int(pi[0]): int(pe[0])]
+            else:
+                print ( "A_type is not ")
+                raw_image = raw_image_t
             Bright_median = str(int(np.median(raw_image))).zfill(4)
             Bright_file_name = test_case_folder + '/A0' + str(B_num) + '_' + Bright_median + '.raw'
             B_index = 'A0'+ str(B_num)
@@ -72,6 +87,7 @@ if __name__ == "__main__":
                                     'Sec':ExT,
                                     'Dose':Dose,
                                     'STD': int(np.std(raw_image)),
+                                    'SNR': 20 * math.log10(np.mean(raw_image)/np.std(raw_image)),
                                     'Median':int(Bright_median)},
                                    ignore_index=True)
         elif B_num == 3:
@@ -80,7 +96,7 @@ if __name__ == "__main__":
             elif folder_list[4] in test_case:
                 Bright_file_name = test_case_folder + '/'+ folder_list[4]+'_OC_Sum' + '.raw'
         print(Bright_file_name)
-        image_tool.save_raw_image(Bright_file_name, raw_image)
+        image_tool.save_raw_image(Bright_file_name, raw_image_t)
         Raw_file_loc = output_folder + '/'
         shutil.move(Bright_file_name, Raw_file_loc)
 
@@ -101,9 +117,9 @@ if __name__ == "__main__":
     for y_value, x_value in zip(y_dn, x_dose):
         plt.text(x_value, y_value, f'{y_value}', ha='right')
     plt.plot(x_fitting, y_fitting, color='red', linestyle='--')
-    plt.text(0.2, 0.9, f'Y = {model_coef[0]:.2f}X +( {model_intercpt:.2f} )', fontsize=10,
+    plt.text(0.17, 0.9, f'Y = {model_coef[0]:.2f}X +( {model_intercpt:.2f} )', fontsize=10,
              transform=plt.gca().transAxes)
-    plt.text(0.2, 0.85, f'R2 = {math.floor(r2score*1000)/1000}', fontsize=10,
+    plt.text(0.17, 0.83, f'R2 = {math.floor(r2score*1000)/1000}', fontsize=10,
              transform=plt.gca().transAxes)
     plt.xlabel('Exposure Dose[uGy]')
     plt.ylabel('Median [DN]')
