@@ -97,7 +97,7 @@ if __name__ == "__main__":
                 Bright_file_name = test_case_folder + '/'+ folder_list[4]+'_OC_Sum' + '.raw'
         print(Bright_file_name)
         image_tool.save_raw_image(Bright_file_name, raw_image_t)
-        # #========= surf plot ==============
+        # #========= surf plot ============== test
         # image_tool.surf_image(raw_image_t)
         # #==================================
         Raw_file_loc = output_folder + '/'
