@@ -81,7 +81,7 @@ if __name__ == "__main__":
             Bright_file_name = test_case_folder + '/A0' + str(B_num) + '_' + Bright_median + '.raw'
             B_index = 'A0'+ str(B_num)
             ExT = X_exp_time[B_num]
-            Dose = 1220.2*float(ExT)+ 3.5293
+            Dose = 1326.6*float(ExT) # 1220.2*float(ExT)+ 3.5293
             # print ( B_num, B_index, ExT, Dose, int(Bright_median) )
             df_BRT = df_BRT.append({'Bright':B_index,
                                     'Sec':ExT,
@@ -97,6 +97,9 @@ if __name__ == "__main__":
                 Bright_file_name = test_case_folder + '/'+ folder_list[4]+'_OC_Sum' + '.raw'
         print(Bright_file_name)
         image_tool.save_raw_image(Bright_file_name, raw_image_t)
+        # #========= surf plot ==============
+        # image_tool.surf_image(raw_image_t)
+        # #==================================
         Raw_file_loc = output_folder + '/'
         shutil.move(Bright_file_name, Raw_file_loc)
 

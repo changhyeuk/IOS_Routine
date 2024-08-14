@@ -59,3 +59,18 @@ def digit_points(array):
     width = point_data[1,0] - point_data[0, 0]
     height = point_data[1,1] - point_data[0, 1]
     return i_point, e_point, width, height
+
+def surf_image(raw_i):
+    data = raw_i
+    x = np.arange(0,1620)
+    y = np.arange(0,2230)
+    #x = np.linspace(0, 1620, 1620)
+    #y = np.linspace(0,2230,2230)
+
+    X, Y = np.meshgrid(x, y)
+    fig = plt.figure()#figsize=(10, 7))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, data, cmap='viridis')
+    ax.set_box_aspect([1620, 2230, 500])
+    fig.colorbar(surf)
+    plt.show()
