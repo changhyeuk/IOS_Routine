@@ -12,7 +12,6 @@ import math
 # Set folder path
 folder_path = './'
 folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
-#folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.1','0.3','0.5']
 
@@ -40,13 +39,13 @@ if __name__ == "__main__":
         os.makedirs(output_path)
 
     A_type = input("Will you use ROI for analysis ? ( ex : y or n ) : ")
-    print ( 'Your answer is : ', A_type )
+
     if A_type == "y":
         print(folder_list[0])
         ROI_test_case_folder = os.path.join(folder_path, folder_list[0])
         ROI_file_path = ROI_test_case_folder + '/D0000.raw'
         ROI_raw_image = image_tool.open_raw_image(ROI_file_path, height, width, 1)
-        pi, pe, ratio = func_tool.ROI_Selection(ROI_raw_image,0)
+        pi, pe, ratio = func_tool.ROI_Selection(ROI_raw_image,0,output_folder)
         print("position : ", pi, pe)
     else:
         print(" ROI will not use")
@@ -89,17 +88,17 @@ if __name__ == "__main__":
                                     'STD': int(np.std(raw_image)),
                                     'SNR': 20 * math.log10(np.mean(raw_image)/np.std(raw_image)),
                                     'Median':int(Bright_median)},
-                                   ignore_index=True)
+                                    ignore_index=True)
         elif B_num == 3:
             if folder_list[3] in test_case:
                 Bright_file_name = test_case_folder + '/'+ folder_list[3]+'_OC_Sum' + '.raw'
             elif folder_list[4] in test_case:
                 Bright_file_name = test_case_folder + '/'+ folder_list[4]+'_OC_Sum' + '.raw'
-        print(Bright_file_name)
+        print('Bright file name at main code', Bright_file_name)
         image_tool.save_raw_image(Bright_file_name, raw_image_t)
-        # #========= surf plot ============== test
-        # image_tool.surf_image(raw_image_t)
-        # #==================================
+        #========= surf plot ============== test
+        image_tool.surf_image(output_folder, test_case, raw_image_t)
+        #==================================
         Raw_file_loc = output_folder + '/'
         shutil.move(Bright_file_name, Raw_file_loc)
 

@@ -63,7 +63,7 @@ if __name__ == "__main__":
             Bright_file_name = test_case_folder + '/A0' + str(B_num) + '_' + Bright_median + '.raw'
             B_index = 'A0'+ str(B_num)
             ExT = X_exp_time[B_num]
-            Dose =  1220.2*float(ExT)+ 3.5293
+            Dose =  1362.6*float(ExT) #1220.2*float(ExT)+ 3.5293
             # print ( B_num, B_index, ExT, Dose, int(Bright_median) )
             df_BRT = df_BRT.append({'Bright':B_index,
                                     'Sec':ExT,
