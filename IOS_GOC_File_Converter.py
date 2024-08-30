@@ -13,9 +13,9 @@ height = 2230
 # Define Dynamic Range
 D_Range_Object = (0,4095)
 D_Range_Raw = (0,4095)
-D_Range_1 = (0,100)
+D_Range_1 = (0,1000)
 D_Range_2 = (0,2000)
-D_Range_3 = (0,500)
+D_Range_3 = (0,1500)
 D_Size = (1620, 2230)
 #======================================================
 

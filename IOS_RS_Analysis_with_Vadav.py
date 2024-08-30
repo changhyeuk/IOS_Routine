@@ -12,7 +12,7 @@ import math
 # Set folder path
 folder_path = './'
 #folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
-folder_list = ['Bright_025','Bright_015','Bright_005','Teeth_025','Resol_025']
+folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.05','0.15','0.25']
 
