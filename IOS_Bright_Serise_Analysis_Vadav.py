@@ -26,6 +26,7 @@ dfs = []
 dfd = []
 df_hr =[]
 max_median =[]
+max_dose_x = 0
 #
 # df_slop = pd.DataFrame(columns=['Serise', 'Slop', 'Intercept','Max Median'])
 # df_dark = pd.DataFrame(columns=['Serise', 'Median','Hr'])
@@ -98,8 +99,14 @@ for df in dfs:
     for y_value, x_value in zip(MedianD, DoseX):
         plt.text(x_value, y_value, f'{int(y_value):d}', ha='right')
     j=j+1
-    #print ( max(DoseX_fit))
-plt.xlim([0, max(DoseX_fit)])
+
+    if max_dose_x <= max(DoseX):
+        max_dose_x = max(DoseX)
+
+print('Max dose :',max_dose_x)
+
+#print ('Max DoseX_fit : ', max(DoseX))
+plt.xlim([0, max_dose_x*1.1])
 plt.ylim([0, 4000])
 plt.xlabel('Exposure Dose[uGy]')
 plt.ylabel('Mean [DN]')

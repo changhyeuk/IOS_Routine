@@ -12,8 +12,7 @@ def linearRegression(x_data, y_data):
     model.fit(x_measure, y_measure)
 
     x_min = 0
-    x_max = x_measure.max()+(x_measure.max()*0.1)
-    #x_max = x_measure.max()+(x_measure.max()*2)
+    x_max = 1000 # There was an issue at main code to plot regression, so just fixed as 700
     x_fit = np.linspace(x_min,x_max,100).reshape(-1,1)
     y_fit = model.predict(x_fit)
     r2 = r2_score(y_measure, model.predict(x_measure))
