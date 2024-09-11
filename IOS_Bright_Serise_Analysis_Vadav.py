@@ -115,42 +115,45 @@ plt.grid()
 plt.legend(fontsize='small')
 plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(j)+'_Xray_ResponseCurve_Sum.jpg', bbox_inches='tight')
 
-df_slop['Total Hr']=df_slop['Serise'].cumsum()
-df_slop['S_Increase']=df_slop['Slop'].diff().fillna(df_slop['Slop'])
-df_slop['Max Median']=max_median
 
-x_min = 0
-x_max = df_slop['Total Hr'].max() + (df_slop['Total Hr'].max() * 0.1)
-x_reg = np.linspace(x_min, x_max, 100).reshape(-1, 1)
 
-T_hr = df_slop['Total Hr'].values.reshape(-1,1)
-S_Increase = df_slop['S_Increase'].values
-
-x_fit_Slop, y_fitting_Slop, model_coef_Slop, model_intercpt_Slop= fitting_tool.polynomialRegression(T_hr,S_Increase, 2)
-
-fig, ax1 = plt.subplots()
-ax1.scatter(T_hr, S_Increase, marker='o')
-line1, = ax1.plot(x_fit_Slop, y_fitting_Slop, color='royalblue', linestyle='--')#,
-ax1.set_xlabel('90C Post Baking Time [hr]')
-ax1.set_ylabel('X-ray Response Curve Slope Variation ',color='royalblue')
-ax1.set_xlim([0, x_max])
-ax1.set_ylim([-1, 4])
-ax1.grid()
-
-Max_M = df_slop['Max Median'].values
-
-ax2 = ax1.twinx()
-color = 'tab:lightcoral'
-x_fit_max, y_fit_max, model_coef_max, model_intercpt_max= fitting_tool.polynomialRegression(T_hr,Max_M, 2)
-ax2.scatter(T_hr,Max_M,color='lightcoral',marker='o')
-line2, = ax2.plot(x_fit_max, y_fit_max, color='lightcoral', linestyle='--')
-ax2.set_ylabel('Maximum Median from X-ray Response ', color='lightcoral')
-lines = [line1, line2]
-labels = [line.get_label() for line in lines]
-ax2.set_xlim([0, x_max])
-ax2.set_ylim([min(y_fit_max)*0.9, max(y_fit_max)*1.1])
-plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(j)+'_X_Response_Slop_by_Baking.jpg', bbox_inches='tight')
-plt.show()
+#
+# df_slop['Total Hr']=df_slop['Serise'].cumsum()
+# df_slop['S_Increase']=df_slop['Slop'].diff().fillna(df_slop['Slop'])
+# df_slop['Max Median']=max_median
+#
+# x_min = 0
+# x_max = df_slop['Total Hr'].max() + (df_slop['Total Hr'].max() * 0.1)
+# x_reg = np.linspace(x_min, x_max, 100).reshape(-1, 1)
+#
+# T_hr = df_slop['Total Hr'].values.reshape(-1,1)
+# S_Increase = df_slop['S_Increase'].values
+#
+# x_fit_Slop, y_fitting_Slop, model_coef_Slop, model_intercpt_Slop= fitting_tool.polynomialRegression(T_hr,S_Increase, 2)
+#
+# fig, ax1 = plt.subplots()
+# ax1.scatter(T_hr, S_Increase, marker='o')
+# line1, = ax1.plot(x_fit_Slop, y_fitting_Slop, color='royalblue', linestyle='--')#,
+# ax1.set_xlabel('90C Post Baking Time [hr]')
+# ax1.set_ylabel('X-ray Response Curve Slope Variation ',color='royalblue')
+# ax1.set_xlim([0, x_max])
+# ax1.set_ylim([-1, 4])
+# ax1.grid()
+#
+# Max_M = df_slop['Max Median'].values
+#
+# ax2 = ax1.twinx()
+# color = 'tab:lightcoral'
+# x_fit_max, y_fit_max, model_coef_max, model_intercpt_max= fitting_tool.polynomialRegression(T_hr,Max_M, 2)
+# ax2.scatter(T_hr,Max_M,color='lightcoral',marker='o')
+# line2, = ax2.plot(x_fit_max, y_fit_max, color='lightcoral', linestyle='--')
+# ax2.set_ylabel('Maximum Median from X-ray Response ', color='lightcoral')
+# lines = [line1, line2]
+# labels = [line.get_label() for line in lines]
+# ax2.set_xlim([0, x_max])
+# ax2.set_ylim([min(y_fit_max)*0.9, max(y_fit_max)*1.1])
+# plt.savefig(os.path.join(folder_path,target_folder)+'/'+str(j)+'_X_Response_Slop_by_Baking.jpg', bbox_inches='tight')
+# plt.show()
 
 
 

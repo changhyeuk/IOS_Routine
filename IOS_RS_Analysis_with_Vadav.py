@@ -12,7 +12,7 @@ import math
 # Set folder path
 folder_path = './'
 #folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
-folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
+folder_list = ['Bright_025','Bright_015','Bright_005','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.05','0.15','0.25']
 
@@ -86,11 +86,13 @@ if __name__ == "__main__":
     Test_serise_num = input("Which test results ? ( 01 ): ")
     Bake_hr_this = input ("How long baking process done? ( ex : 018 ) : ")
     output_file_n = 'Bright_Image_Info_'+Test_serise_num+'th_'+Bake_hr_this+'hr'
-    #Dark_output_file_name = 'DK_Info_'+Test_serise_num+'th_'+Bake_hr_this+'hr'
+    Dark_output_file_name = 'DK_Info_'+Test_serise_num+'th_'+Bake_hr_this+'hr'
 
     df_BRT.to_excel(output_folder+'/'+output_file_n+'.xlsx')
     #==========Plot
     x_dose = df_BRT['Dose'].values.reshape(-1,1)
+    print('x_dose : ', x_dose)
+    print('max_x_dose : ',max(x_dose))
     y_dn = df_BRT['Median'].values
     x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearRegression(x_dose,y_dn)
     plt.figure()
@@ -106,32 +108,23 @@ if __name__ == "__main__":
     plt.ylabel('Median [DN]')
     plt.title(' X-ray Response Curve ')
     plt.ylim([0,4095])
-    plt.xlim([0, max(x_fitting)])
+    plt.xlim([0, max(x_dose)*1.1])
     plt.grid()
     plt.savefig(output_folder+'/Xray_response.jpg', bbox_inches='tight')
     plt.close()
 
     pattern = re.compile(r'(\d+)\+\.raw')
-
+    # ==================================
     for test_case in folder_list:
         # print ( test_case )
         files_with_plus = []
         test_case_folder = os.path.join(folder_path,test_case)
-        # for file_name in os.listdir(test_case_folder):
-        #     if '+' in file_name:
-        #         match = pattern.match(file_name)
-        #         if match:
-        #             #print( int(match.group(1)),file_name)
-        #             files_with_plus.append(int(match.group(1)))
-        #
-        # Dark_image_name = 'D000'+str( int( files_with_plus[0])-1 ) +'.raw'
+
         Dark_image_name = 'dark.raw'
         Dark_image_path = test_case_folder+'/'+Dark_image_name
         D_raw_image = image_tool.open_raw_image(Dark_image_path,height,width,1)
         Dark_median = str(int(np.median(D_raw_image))).zfill(4)
-        # df_dark = pd.DataFrame(columns=['Bright', 'Dark_Median'])
-        # if 'Bright_025' in test_case:
-        #     print ( 'Bright05 ', str(int(np.median(D_raw_image))))
+
         df_dark = df_dark.append({'Bright':test_case, 'Dark_Median': int(np.median(D_raw_image))}, ignore_index=True)
         New_D_image_name = test_case + '_' + Dark_image_name[:-4]+'_'+Dark_median+'.raw'
         image_tool.save_raw_image(New_D_image_name, D_raw_image)
@@ -139,7 +132,41 @@ if __name__ == "__main__":
         Raw_file_loc = output_folder + '/'
         shutil.move(New_D_image_name, Raw_file_loc)
 
+    df_dark.to_excel(output_folder + '/' + Dark_output_file_name + '.xlsx')
     func_tool.Dark_Case_Plot(output_folder, df_dark)
-    print ( df_dark )
-    # for file_name in os.listdir(output_folder):
-    #     print (file_name)
+
+
+
+
+
+    # ==================================
+    # for test_case in folder_list:
+    #     # print ( test_case )
+    #     files_with_plus = []
+    #     test_case_folder = os.path.join(folder_path,test_case)
+    #     # for file_name in os.listdir(test_case_folder):
+    #     #     if '+' in file_name:
+    #     #         match = pattern.match(file_name)
+    #     #         if match:
+    #     #             #print( int(match.group(1)),file_name)
+    #     #             files_with_plus.append(int(match.group(1)))
+    #     #
+    #     # Dark_image_name = 'D000'+str( int( files_with_plus[0])-1 ) +'.raw'
+    #     Dark_image_name = 'dark.raw'
+    #     Dark_image_path = test_case_folder+'/'+Dark_image_name
+    #     D_raw_image = image_tool.open_raw_image(Dark_image_path,height,width,1)
+    #     Dark_median = str(int(np.median(D_raw_image))).zfill(4)
+    #     # df_dark = pd.DataFrame(columns=['Bright', 'Dark_Median'])
+    #     # if 'Bright_025' in test_case:
+    #     #     print ( 'Bright05 ', str(int(np.median(D_raw_image))))
+    #     df_dark = df_dark.append({'Bright':test_case, 'Dark_Median': int(np.median(D_raw_image))}, ignore_index=True)
+    #     New_D_image_name = test_case + '_' + Dark_image_name[:-4]+'_'+Dark_median+'.raw'
+    #     image_tool.save_raw_image(New_D_image_name, D_raw_image)
+    #     image_tool.save_simple_bmp(output_folder + '/'+New_D_image_name[:-4],D_raw_image,DRange_F)
+    #     Raw_file_loc = output_folder + '/'
+    #     shutil.move(New_D_image_name, Raw_file_loc)
+    #
+    # func_tool.Dark_Case_Plot(output_folder, df_dark)
+    # print ( df_dark )
+    # # for file_name in os.listdir(output_folder):
+    # #     print (file_name)
