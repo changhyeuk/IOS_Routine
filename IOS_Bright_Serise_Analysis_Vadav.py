@@ -119,7 +119,7 @@ for file in file_list:
     if 'DK' in file and file.endswith('.xlsx'):
         print(folder_path + target_folder + '/' + file)
         df_each = pd.read_excel(folder_path+target_folder+'/'+file, engine='openpyxl')
-        value = df_each.loc[df_each['Bright'] == 'Bright_05', 'Dark_Median'].values[0]
+        value = df_each.loc[df_each['Bright'] == 'Bright_025', 'Dark_Median'].values[0]
         dfs_dark.append(value)
         #dfss.append(df_each)
 print(dfs_dark)
