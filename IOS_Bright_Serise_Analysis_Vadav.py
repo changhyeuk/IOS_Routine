@@ -25,6 +25,7 @@ file_list = os.listdir(folder_path+target_folder)
 dfs = []
 dfd = []
 df_hr =[]
+df_case=[]
 max_median =[]
 max_dose_x = 0
 #
@@ -75,6 +76,7 @@ for file in file_list:
         df_each = pd.read_excel(folder_path+target_folder+'/'+file, engine='openpyxl')
         dfs.append(df_each)
         df_hr.append(int(file[-10:-7]))
+        df_case.append(int(file[-15:-13]))
 
 plt.figure()
 j = 0
