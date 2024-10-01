@@ -11,6 +11,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import r2_score
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import math
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -138,7 +139,7 @@ for i, value in enumerate(dfs_dark):
     ax1.text(df_case[i], value, str(value), fontsize=9, ha='right')
 
 ax1.set_xlim([0, max(df_case)+1])
-ax1.set_ylim([0, 4000])
+ax1.set_ylim([0, 4100])
 ax1.set_xlabel('Test Serise')
 ax1.set_ylabel('Mean [DN]')
 ax1.set_title('Dark Signal Variation')
