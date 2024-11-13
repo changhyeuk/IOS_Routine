@@ -11,10 +11,11 @@ import math
 
 # Set folder path
 folder_path = './'
-folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
-#folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
+#folder_list = ['Bright_05','Bright_03','Bright_01','Teeth_05','Resol_05']
+folder_list = ['Bright_005','Bright_015','Bright_025','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
-X_exp_time = ['0.1','0.3','0.5']
+#X_exp_time = ['0.1','0.3','0.5']
+X_exp_time = ['0.05','0.15','0.25']
 
 # Set global variable
 width = 1620
@@ -53,6 +54,7 @@ if __name__ == "__main__":
 
         test_case_folder = os.path.join(folder_path,test_case)
         target_file_path = test_case_folder+'/'+target_name+'.raw'
+        print(target_file_path)
         raw_image = image_tool.open_raw_image(target_file_path,height,width,1)
         # print ( np.median(raw_image))
 
@@ -90,8 +92,12 @@ if __name__ == "__main__":
 
     df_BRT.to_excel(output_folder+'/'+output_file_n+'.xlsx')
     #==========Plot
-    x_dose = df_BRT['Dose'].values.reshape(-1,1)
+    x_dose_n = df_BRT['Dose'].values.reshape(-1,1)
     y_dn = df_BRT['Median'].values
+    x_dose = x_dose_n[::-1]
+
+
+    print(x_dose, y_dn)
     x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearRegression(x_dose,y_dn)
     plt.figure()
     plt.scatter(x_dose,y_dn,color='blue')
