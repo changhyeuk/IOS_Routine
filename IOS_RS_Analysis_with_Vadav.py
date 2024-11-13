@@ -125,7 +125,12 @@ if __name__ == "__main__":
         D_raw_image = image_tool.open_raw_image(Dark_image_path,height,width,1)
         Dark_median = str(int(np.median(D_raw_image))).zfill(4)
 
-        df_dark = df_dark.append({'Bright':test_case, 'Dark_Median': int(np.median(D_raw_image))}, ignore_index=True)
+        df_dark = df_dark.append({'Bright':test_case,
+                                  'Dark_Median': int(np.median(D_raw_image)),
+                                  'D_STD':int(np.std(D_raw_image)),
+                                  'D_Max_10':int(np.percentile(D_raw_image,90)),
+                                  'D_min_10':int(np.percentile(D_raw_image,10))}, ignore_index=True)
+
         New_D_image_name = test_case + '_' + Dark_image_name[:-4]+'_'+Dark_median+'.raw'
         image_tool.save_raw_image(New_D_image_name, D_raw_image)
         image_tool.save_simple_bmp(output_folder + '/'+New_D_image_name[:-4],D_raw_image,DRange_F)

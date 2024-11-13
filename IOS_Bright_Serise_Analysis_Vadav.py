@@ -138,7 +138,7 @@ ax1.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
 for i, value in enumerate(dfs_dark):
     ax1.text(df_case[i], value, str(value), fontsize=9, ha='right')
 
-ax1.set_xlim([0, max(df_case)+1])
+ax1.set_xlim([1, max(df_case)+0.5])
 ax1.set_ylim([0, 4100])
 ax1.set_xlabel('Test Serise')
 ax1.set_ylabel('Mean [DN]')
