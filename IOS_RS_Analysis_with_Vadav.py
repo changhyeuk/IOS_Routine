@@ -12,7 +12,7 @@ import math
 # Set folder path
 folder_path = './'
 #folder_list = ['Bright_025','Bright_015','Bright_005','Resol_025']
-folder_list = ['Bright_025','Bright_015','Bright_005','Teeth_025','Resol_025']
+folder_list = ['Dark_0','Bright_025','Bright_015','Bright_005','Teeth_025','Resol_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.05','0.15','0.25']
 
@@ -42,7 +42,9 @@ if __name__ == "__main__":
     # Measure the median in each test case
     for test_case in folder_list:
 
-        if 'Bright_005' in test_case:
+        if 'Dark_0' in test_case:
+            continue
+        elif 'Bright_005' in test_case:
             B_num = 0
         elif 'Bright_015' in test_case:
             B_num = 1
@@ -56,7 +58,7 @@ if __name__ == "__main__":
         raw_image = image_tool.open_raw_image(target_file_path,height,width,1)
         # print ( np.median(raw_image))
 
-        print(test_case)
+        # print(test_case)
 
         if B_num < 3:
             Bright_median = str(int(np.median(raw_image))).zfill(5)
@@ -91,8 +93,8 @@ if __name__ == "__main__":
     df_BRT.to_excel(output_folder+'/'+output_file_n+'.xlsx')
     #==========Plot
     x_dose = df_BRT['Dose'].values.reshape(-1,1)
-    print('x_dose : ', x_dose)
-    print('max_x_dose : ',max(x_dose))
+    #print('x_dose : ', x_dose)
+    #print('max_x_dose : ',max(x_dose))
     y_dn = df_BRT['Median'].values
     x_fitting, y_fitting, model_coef, model_intercpt, r2score = fitting_tool.linearRegression(x_dose,y_dn)
     plt.figure()
@@ -116,7 +118,9 @@ if __name__ == "__main__":
     pattern = re.compile(r'(\d+)\+\.raw')
     # ==================================
     for test_case in folder_list:
-        # print ( test_case )
+        print ( test_case )
+        # if 'Dark_0' in test_case:
+        #     continue
         files_with_plus = []
         test_case_folder = os.path.join(folder_path,test_case)
 
