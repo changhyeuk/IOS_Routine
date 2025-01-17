@@ -10,7 +10,7 @@ import re
 import math
 
 # 2025.01.07 Current Version
-# Vadav operates with Offset Calibration Applied
+# Vadav operates with Offset Calibration Not Applied
 
 # Set folder path
 folder_path = './'
@@ -58,7 +58,8 @@ if __name__ == "__main__":
 
         test_case_folder = os.path.join(folder_path,test_case)
         target_file_path = test_case_folder+'/'+target_name+'.raw'
-        raw_image = image_tool.open_raw_image(target_file_path,height,width,1)
+        dark_file_path = test_case_folder+'/dark.raw'
+        raw_image = image_tool.open_sub_raw_image(target_file_path,dark_file_path,height,width,1)
         # print ( np.median(raw_image))
 
         # print(test_case)

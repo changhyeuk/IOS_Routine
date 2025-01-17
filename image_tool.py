@@ -59,3 +59,35 @@ def digit_points(array):
     width = point_data[1,0] - point_data[0, 0]
     height = point_data[1,1] - point_data[0, 1]
     return i_point, e_point, width, height
+
+def open_sub_raw_image(file_path,dark_path, H, W, Mask):
+    print (" File Path : : ", file_path)
+    print (" Dark Path : : ", dark_path)
+    if Mask == 0 :
+        with open(file_path, 'rb') as f:
+            # RAW 파일을 numpy 배열로 읽기
+            raw_data = np.frombuffer(f.read(), dtype=np.int16)
+        # image reshape
+        image_raw = raw_data.reshape((H, W))
+        return image_raw
+
+    elif Mask == 1:
+        with open(file_path, 'rb') as f:
+            # RAW 파일을 numpy 배열로 읽기
+            raw_data = np.frombuffer(f.read(), dtype=np.int16)
+        # image reshape
+        B_image_raw = raw_data.reshape((H, W))
+
+        with open(dark_path,'rb') as f:
+            dark_data = np.frombuffer(f.read(),dtype=np.int16)
+        D_image_raw = dark_data.reshape((H,W))
+
+        image_raw = B_image_raw-D_image_raw
+
+        # Poly Mask Generation
+        mask = np.zeros((H, W), dtype=np.uint8)
+        mask_pts = np.array([[0,0], [0, 1950], [280, 2229],[1340, 2229], [1619, 1950],[1619,0]], dtype=np.int32)
+        cv2.fillPoly(mask, [mask_pts], 1)
+        # Mask apply to Raw Image
+        masked_img = cv2.bitwise_and(image_raw,image_raw,mask = mask)
+        return masked_img
