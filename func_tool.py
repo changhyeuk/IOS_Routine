@@ -114,7 +114,7 @@ def extract_data(Folder_Path):
     plt.figure()
     plt.plot(case_median, 'bo-')
     plt.xlabel('Obtained Frame [#]')
-    plt.ylabel('Median [DN]')
+    plt.ylabel('Median [LSB]')
     plt.savefig(Folder_Path + '/Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 
@@ -153,7 +153,7 @@ def Sum_extract_Data(Folder_Path, List, Out_Folder):
         plt.plot(merged_df.loc[i:i+9,'Median'], linestyle='-', marker='o', color=color,label=group_label)
         plt.legend(loc='upper center')
     plt.xlabel('Obtained Frame [#]')
-    plt.ylabel('Median [DN]')
+    plt.ylabel('Median [LSB]')
     plt.ylim([1000,3000])
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
@@ -177,7 +177,7 @@ def Single_extract_Data(Folder_Path, List, Out_Folder):
     plt.plot(x_median, linestyle='-', marker='o', color='blue')#,label=group_label)
     plt.legend(loc='upper center')
     plt.xlabel('Obtained Frame [#]')
-    plt.ylabel('Median [DN]')
+    plt.ylabel('Median [LSB]')
     plt.savefig(Case_Out_folder + '/All_Median_Signal_Variation.jpg', bbox_inches='tight')
     plt.close()
 
@@ -220,7 +220,7 @@ def X_Response(Folder_Path,Out_Folder,ExposureT,Dark_Info):
     plt.text(0.2, 0.85, f'R2 = {math.floor(r2score*1000)/1000}', fontsize=10,
              transform=plt.gca().transAxes)
     plt.xlabel('Exposure Dose[uGy]')
-    plt.ylabel('Median [DN]')
+    plt.ylabel('Median [LSB]')
     plt.title(' X-ray Response Curve ')
     plt.ylim([0,3000])
     plt.xlim([0, max(x_fitting)])
@@ -286,7 +286,7 @@ def Dark_Case_Plot(outputfolder,df):
 
     ax1.set_ylim([0, 4095])
     ax1.set_xlabel('Test Case')
-    ax1.set_ylabel('Median [DN]')
+    ax1.set_ylabel('Median [LSB]')
     ax1.set_title('Dark Median Variation')
     ax1.grid()
 
@@ -301,3 +301,41 @@ def Dark_Case_Plot(outputfolder,df):
     ax2.tick_params(axis='y', labelcolor='red')
 
     plt.savefig(outputfolder+'/Dark_Varation.jpg',bbox_inches='tight')
+
+def SimpleCase_Plot(outputfolder,file_name,df):
+    print (df)
+    Dark_case = df['Time']
+    Dark_median = df['Median']
+
+    base_value = Dark_median[0]
+    percentage_change = [(value - base_value) / base_value * 100 for value in Dark_median]
+
+    #Dark_case_stable = df.iloc[1:]
+    #print(Dark_case_stable)
+
+    #print(max(Dark_median), math.ceil(max(Dark_median)/500)*500)
+
+    fig, ax1 = plt.subplots()
+
+    ax1.plot(Dark_case, Dark_median, linestyle='-', marker='o', color='orange')
+
+    for i, value in enumerate(Dark_median):
+        ax1.text(Dark_case[i], value + 20, str(value), ha='center')
+
+    ax1.set_ylim([0, math.ceil(max(Dark_median)/500)*500])
+    ax1.set_xlabel('Test Case')
+    ax1.set_ylabel('Median [LSB]')
+    ax1.set_title(file_name)
+    ax1.grid()
+
+    # Create a second y-axis for the percentage change
+    ax2 = ax1.twinx()
+    ax2.plot(Dark_case, percentage_change, linestyle='--', marker='x', color='red')
+    for i, pct in enumerate(percentage_change):
+        ax2.text(Dark_case[i], pct + 2, f'{pct:.1f}%', ha='center', color='red')
+    ax2.set_ylim([-10, 100])
+    ax2.axhline(y=0, color='red', linestyle='--', linewidth=0.8)
+    ax2.set_ylabel('Percentage Change [%]', color='red')
+    ax2.tick_params(axis='y', labelcolor='red')
+
+    plt.savefig(outputfolder+'/'+file_name+'.jpg',bbox_inches='tight')

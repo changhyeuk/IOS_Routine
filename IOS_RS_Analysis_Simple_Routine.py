@@ -95,38 +95,23 @@ if __name__ == "__main__":
     df_DRK.to_excel(output_folder + '/' + Dark_output_file_name + '.xlsx')
 
     # Plot Bright Image Median
-    x_time = df_BRT['Time'].values#.reshape(-1, 1)
-    y_dn = df_BRT['Median'].values
-    print(x_time, y_dn)
-    plt.figure()
-    plt.plot(x_time, y_dn, color='blue', marker='o', markersize=8)
-    for y_value, x_value in zip(y_dn, x_time):
-        plt.text(x_value, y_value, f'{y_value}', ha='right')
-    plt.xlabel('Test Time [ min ]')
-    plt.ylabel('Median [ DN ]')
-    plt.title(' Bright [ Median ] Signal Variation ')
-    plt.ylim([0, 2000])
-    #plt.xlim([0, max(x_time) * 1.1])
-    plt.grid()
-    plt.savefig(output_folder + '/Bright_Singal_Valriation.jpg', bbox_inches='tight')
-    plt.close()
+    # x_time = df_BRT['Time'].values#.reshape(-1, 1)
+    # y_dn = df_BRT['Median'].values
+    # print(x_time, y_dn)
+    # plt.figure()
+    # plt.plot(x_time, y_dn, color='blue', marker='o', markersize=8)
+    # for y_value, x_value in zip(y_dn, x_time):
+    #     plt.text(x_value, y_value, f'{y_value}', ha='right')
+    # plt.xlabel('Test Time [ min ]')
+    # plt.ylabel('Median [ DN ]')
+    # plt.title(' Bright [ Median ] Signal Variation ')
+    # plt.ylim([1000, 2000])
+    # #plt.xlim([0, max(x_time) * 1.1])
+    # plt.grid()
+    # plt.savefig(output_folder + '/Bright_Singal_Valriation.jpg', bbox_inches='tight')
+    # plt.close()
 
-    # Plot Object Dark Image Median
-    x_D_time = df_DRK['Time'].values#.reshape(-1, 1)
-    y_D_dn = df_DRK['Median'].values
-    print(x_D_time, y_D_dn)
-    plt.figure()
-    plt.plot(x_D_time, y_D_dn, color='blue', marker='o', markersize=8)
-    for y_value, x_value in zip(y_D_dn, x_D_time):
-        plt.text(x_value, y_value, f'{y_value}', ha='right')
-    plt.xlabel('Test Time [ min ]')
-    plt.ylabel('Median [ DN ]')
-    plt.title(' Dark [ Median ] Signal Variation ')
-    plt.ylim([0, 4095])
-    #plt.xlim([0, max(x_time) * 1.1])
-    plt.grid()
-    plt.savefig(output_folder + '/Dark_Singal_Valriation.jpg', bbox_inches='tight')
-    plt.close()
-
-    print(df_BRT)
+    func_tool.SimpleCase_Plot(output_folder,'Bright_Variation', df_BRT)
+    func_tool.SimpleCase_Plot(output_folder, 'Dark_Variation',df_DRK)
+    #print(df_BRT)
 
