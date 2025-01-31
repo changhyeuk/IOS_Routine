@@ -70,21 +70,31 @@ if __name__ == "__main__":
 
         print(Bright_median, Cal_name)
         Dose = 1220.2 * float(X_exp_time[0]) + 3.5293
-        df_BRT = df_BRT.append({'Time': test_case[0],
-                                'Sec': X_exp_time[0],
-                                'Dose': Dose,
-                                'STD': int(np.std(Bright_raw)),
-                                'Median': int(Bright_median)},
-                               ignore_index=True)
+        # df_BRT = df_BRT.append({'Time': test_case[0],
+        #                         'Sec': X_exp_time[0],
+        #                         'Dose': Dose,
+        #                         'STD': int(np.std(Bright_raw)),
+        #                         'Median': int(Bright_median)},
+        #                        ignore_index=True)
+
+        df_BRT = pd.concat([df_BRT, pd.DataFrame([{'Time': test_case[0],
+                                                   'Sec': X_exp_time[0],
+                                                   'Dose': Dose,
+                                                   'STD': int(np.std(Bright_raw)),
+                                                   'Median': int(Bright_median)}])], ignore_index=True)
 
         # print(Bright_median, Cal_name)
         # Dose = 1220.2 * float(X_exp_time[0]) + 3.5293
-        df_DRK = df_DRK.append({'Time': test_case[0],
-                                'Dose': Dose,
-                                'STD': int(np.std(ODark_raw)),
-                                'Median': int(ODark_median)},
-                               ignore_index=True)
-
+        # df_DRK = df_DRK.append({'Time': test_case[0],
+        #                         'Dose': Dose,
+        #                         'STD': int(np.std(ODark_raw)),
+        #                         'Median': int(ODark_median)},
+        #                        ignore_index=True)
+        #
+        df_DRK = pd.concat([df_DRK, pd.DataFrame([{'Time': test_case[0],
+                                                   'Dose': Dose,
+                                                   'STD': int(np.std(ODark_raw)),
+                                                   'Median': int(ODark_median)}])], ignore_index=True)
 
     Test_serise_num = input("Which test results ? ( 01 ): ")
     Bake_hr_this = input("How long baking process done? ( ex : 018 ) : ")
