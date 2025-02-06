@@ -34,5 +34,5 @@ for file in file_list:
         print(target_file)
         Source_file = image_tool.open_raw_image(target_file,height,width,1)
         image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_1)
-        image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_2)
-        image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_3)
+        #image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_2)
+        #image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_3)
