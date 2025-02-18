@@ -48,19 +48,28 @@ for category in categories:
         DoseX = df['Time'].values.reshape(-1, 1)
         MedianD = df['Median'].values
         all_medianD.extend(MedianD)
-
+        #print(all_medianD)
         plt.plot(DoseX, MedianD,
                  color=inner_colors[j], marker='o', linestyle='-', label=f'{j+1} : {df_hr[j]} hr ')
         for y_value, x_value in zip(MedianD, DoseX):
             plt.text(x_value, y_value, f'{int(y_value):d}', ha='right')
         j += 1
+    #print(math.floor(min(all_medianD)/100)*100, math.ceil(max(all_medianD)/100)*100 )
 
-    plt.ylim([math.floor(min(all_medianD)/100)*100, math.ceil(max(all_medianD)/100)*100])
+    filtered_medianD = [value for value in all_medianD if value > 0]
+    # 만약 모든 값이 0이면 최소, 최대값을 강제로 설정
+    if len(filtered_medianD) > 0:
+        ymin = math.floor(min(filtered_medianD) / 500) * 500
+        ymax = math.ceil(max(filtered_medianD) / 500) * 500
+    else:
+        ymin, ymax = 0, 1000  # 기본값 설정 (필요에 따라 조정 가능)
+    plt.ylim([ymin, ymax])
     plt.xlabel('Time [min]')
     plt.ylabel('Mean [LSB]')
     plt.title(f'{category} Signal Variation')
     plt.grid()
     plt.legend(fontsize='small')
     save_path = os.path.join(folder_path, target_folder, f'{category}_Signal_Variation.jpg')
+    #plt.figure(figsize=(6, 4))
     plt.savefig(save_path, bbox_inches='tight')
     print(f'Saved: {save_path}')

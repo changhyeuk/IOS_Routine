@@ -13,9 +13,9 @@ height = 2230
 # Define Dynamic Range
 D_Range_Object = (0,4095)
 D_Range_Raw = (0,4095)
-D_Range_1 = (0,1000)
-D_Range_2 = (0,1500)
-D_Range_3 = (0,500)
+D_Range_1 = (0,2000)
+D_Range_2 = (0,1000)
+D_Range_3 = (0,1500)
 D_Size = (1620, 2230)
 #======================================================
 
@@ -29,10 +29,11 @@ for file in file_list:
         file_path = os.path.join(folder_path, file)
         os.remove(file_path)
     #elif ext == '.raw' and 'Dark' not in f_name and 'Bright' not in f_name:
+
     elif ext == '.raw': #and 'Dark' not in f_name and 'Bright' not in f_name:
         target_file = os.path.join(folder_path,file)
         print(target_file)
         Source_file = image_tool.open_raw_image(target_file,height,width,1)
-        image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_1)
-        #image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_2)
-        #image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_3)
+        #image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_1)
+        image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_2)
+        image_tool.save_simple_bmp(target_file[:-4],Source_file,D_Range_3)
