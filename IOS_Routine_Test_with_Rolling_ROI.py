@@ -89,7 +89,7 @@ if __name__ == "__main__":
                                     'STD': int(np.std(raw_image)),
                                     'SNR': 20 * math.log10(np.mean(raw_image)/np.std(raw_image)),
                                     'Median':int(Bright_median)},
-                                   ignore_index=True)
+                                    ignore_index=True)
         elif B_num == 3:
             if folder_list[3] in test_case:
                 Bright_file_name = test_case_folder + '/'+ folder_list[3]+'_OC_Sum' + '.raw'
