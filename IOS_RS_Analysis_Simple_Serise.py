@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+import re
 
 # Set folder path
 folder_path = './'
@@ -28,8 +29,20 @@ for file in file_list:
             print(os.path.join(folder_path, target_folder, file))
             df_each = pd.read_excel(os.path.join(folder_path, target_folder, file), engine='openpyxl')
             data[category]["dfs"].append(df_each)
-            data[category]["df_hr"].append(int(file[-10:-7]))
-            data[category]["df_case"].append(int(file[-15:-13]))
+            #data[category]["df_hr"].append(int(file[-10:-7])) # baking info
+            #data[category]["df_case"].append(int(file[-15:-13])) # trial number
+            # print(file[-10:-7])
+            # print(file[-15:-13])
+            # 정규 표현식으로 90C-66hr-FVac 추출
+            match = re.search(r"(\d+C-\d+hr-\w+)", file)
+            if match:
+                extracted_info=match.group(1)
+            else:
+                extracted_info = file.split("_")[-1].split(".")[0]
+            #data["df_info"].append(extracted_info)
+            print(extracted_info)
+            data[category]["df_hr"].append(extracted_info)
+
 
 # Bright와 DK 각각에 대해 처리
 for category in categories:
@@ -50,7 +63,7 @@ for category in categories:
         all_medianD.extend(MedianD)
         #print(all_medianD)
         plt.plot(DoseX, MedianD,
-                 color=inner_colors[j], marker='o', linestyle='-', label=f'{j+1} : {df_hr[j]} hr ')
+                 color=inner_colors[j], marker='o', linestyle='-', label=f'{j+1} : {df_hr[j]}')
         for y_value, x_value in zip(MedianD, DoseX):
             plt.text(x_value, y_value, f'{int(y_value):d}', ha='right')
         j += 1

@@ -97,10 +97,11 @@ if __name__ == "__main__":
                                                    'Median': int(ODark_median)}])], ignore_index=True)
 
     Test_serise_num = input("Which test results ? ( 01 ): ")
-    Bake_hr_this = input("How long baking process done? ( ex : 018 ) : ")
-    output_file_n = 'Bright_Image_Info_' + Test_serise_num + 'th_' + Bake_hr_this + 'hr'
-    Dark_output_file_name = 'DK_Info_' + Test_serise_num + 'th_' + Bake_hr_this + 'hr'
+    Bake_hr_this = input("Process condition ? ( ex : 90C-66hr-100torr ) : ")
 
+    output_file_n = 'Bright_Image_Info_' + Test_serise_num + 'th_' + Bake_hr_this# + 'hr'
+    Dark_output_file_name = 'DK_Info_' + Test_serise_num + 'th_' + Bake_hr_this# + 'hr'
+    print(Dark_output_file_name)
     df_BRT.to_excel(output_folder+'/'+output_file_n+'.xlsx')
     df_DRK.to_excel(output_folder + '/' + Dark_output_file_name + '.xlsx')
 
