@@ -9,14 +9,14 @@ import shutil
 import re
 import math
 
-# 2025.01.17
-# In Case of just take 1 bright / object images by time
-# Prepare the bmp images and cal data
+# 2025.03.12
+# Voltage Variation Experiment Analysis
+
 
 # Set folder path
 folder_path = './'
-#folder_list = ['Bright_025','Bright_015','Bright_005','Resol_025']
-folder_list = ['0min']#,'3min','6min']
+#folder_list = ['0min','3min','6min']
+folder_list = ['1-2_5V','2-1_2V','3-1_5V','4-1_8V','5-2_1V','6-2_4V','7-2_7V','8-3_0V','9-4_0V']#,'10-2_5V']
 subfolder_list = ['Bright_025','Object_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.25']
@@ -52,6 +52,7 @@ if __name__ == "__main__":
         #Bright Case
         B_path = './'+test_case+'/'+subfolder_list[0]+'/Bright.raw'
         Bright_raw = image_tool.open_raw_image(B_path,height,width,1)
+        #print(f"n (height): {Bright_raw.shape[0]}, m (width): {Bright_raw.shape[1]}")
         Bright_median = int(np.median(Bright_raw[300:700, 600:1000]))
         Cal_name = 'A00_'+str(Bright_median).zfill(5)+'.raw'
         image_tool.save_raw_image('./'+ output_folder + '/' + Cal_name, Bright_raw)
@@ -85,7 +86,8 @@ if __name__ == "__main__":
 
         # print(Bright_median, Cal_name)
         # Dose = 1220.2 * float(X_exp_time[0]) + 3.5293
-        # df_DRK = df_DRK.append({'Time': test_case[0],
+        # df_DRK = df_DRK.append({'Time': 02
+        # test_case[0],
         #                         'Dose': Dose,
         #                         'STD': int(np.std(ODark_raw)),
         #                         'Median': int(ODark_median)},

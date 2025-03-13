@@ -333,7 +333,7 @@ def SimpleCase_Plot(outputfolder,file_name,df):
     ax2.plot(Dark_case, percentage_change, linestyle='--', marker='x', color='red')
     for i, pct in enumerate(percentage_change):
         ax2.text(Dark_case[i], pct + 2, f'{pct:.1f}%', ha='center', color='red')
-    ax2.set_ylim([-10, 100])
+    ax2.set_ylim([math.floor(min(percentage_change)/20)*20, math.ceil(max(percentage_change)/20)*20])
     ax2.axhline(y=0, color='red', linestyle='--', linewidth=0.8)
     ax2.set_ylabel('Percentage Change [%]', color='red')
     ax2.tick_params(axis='y', labelcolor='red')
