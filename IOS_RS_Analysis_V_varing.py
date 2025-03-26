@@ -16,7 +16,8 @@ import math
 # Set folder path
 folder_path = './'
 #folder_list = ['0min','3min','6min']
-folder_list = ['1-2_5V','2-1_2V','3-1_5V','4-1_8V','5-2_1V','6-2_4V','7-2_7V','8-3_0V','9-4_0V']#,'10-2_5V']
+#folder_list = ['1_2V','1_5V','1_8V','2_1V','2_4V','2_7V','3_0V','4_0V']
+folder_list = ['1','2','3','4','5','6','7','8','9','10']
 subfolder_list = ['Bright_025','Object_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.25']
@@ -78,7 +79,7 @@ if __name__ == "__main__":
         #                         'Median': int(Bright_median)},
         #                        ignore_index=True)
 
-        df_BRT = pd.concat([df_BRT, pd.DataFrame([{'Time': test_case[0],
+        df_BRT = pd.concat([df_BRT, pd.DataFrame([{'Time': test_case,
                                                    'Sec': X_exp_time[0],
                                                    'Dose': Dose,
                                                    'STD': int(np.std(Bright_raw)),
@@ -93,7 +94,7 @@ if __name__ == "__main__":
         #                         'Median': int(ODark_median)},
         #                        ignore_index=True)
         #
-        df_DRK = pd.concat([df_DRK, pd.DataFrame([{'Time': test_case[0],
+        df_DRK = pd.concat([df_DRK, pd.DataFrame([{'Time': test_case,
                                                    'Dose': Dose,
                                                    'STD': int(np.std(ODark_raw)),
                                                    'Median': int(ODark_median)}])], ignore_index=True)

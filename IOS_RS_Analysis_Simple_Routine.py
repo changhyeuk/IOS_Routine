@@ -16,7 +16,7 @@ import math
 # Set folder path
 folder_path = './'
 #folder_list = ['Bright_025','Bright_015','Bright_005','Resol_025']
-folder_list = ['0min']#,'3min','6min']
+folder_list = ['0min','3min','6min']
 subfolder_list = ['Bright_025','Object_025']
 output_folder = 'Vadav_Cal\Raw_Data'
 X_exp_time = ['0.25']
